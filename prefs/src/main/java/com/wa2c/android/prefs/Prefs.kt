@@ -134,6 +134,36 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     }
 
     /** Get a value from preference. */
+    fun getDoubleOrNull(keyRes : Int) : Double? {
+        return getDoubleOrNull(context.getString(keyRes))
+    }
+    /** Get a value from preference. */
+    fun getDoubleOrNull(key : String) : Double? {
+        return if (contains(key)) getDouble(key) else null
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getDouble(keyRes : Int, default: Double = 0.0, defRes : Int = -1): Double {
+        return getDouble(context.getString(keyRes), default, defRes)
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getDouble(key : String, default: Double = 0.0, defRes : Int = -1) : Double {
+        return if (contains(key)) {
+            val v = sharedPreferences.getLong(key, 0)
+            java.lang.Double.longBitsToDouble(v)
+        } else {
+            if (defRes > 0) {
+                val v = TypedValue()
+                context.resources.getValue(defRes, v, true)
+                sharedPreferences.getFloat(key, v.float).toDouble()
+            } else {
+                default
+            }
+        }
+    }
+
+    /** Get a value from preference. */
     fun getStringOrNull(keyRes : Int) : String? {
         return getStringOrNull(context.getString(keyRes))
     }
@@ -237,8 +267,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     /** Set a value to preference. */
     fun putBoolean(keyRes : Int, value : Boolean?) : Prefs {
-        putBoolean(context.getString(keyRes), value)
-        return this
+        return putBoolean(context.getString(keyRes), value)
     }
     /** Set a value to preference. */
     fun putBoolean(key : String, value : Boolean?) : Prefs {
@@ -253,8 +282,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     /** Set a value to preference. */
     fun putInt(keyRes : Int, value : Int?) : Prefs {
-        putInt(context.getString(keyRes), value)
-        return this
+        return putInt(context.getString(keyRes), value)
     }
     /** Set a value to preference. */
     fun putInt(key : String, value : Int?) : Prefs {
@@ -269,8 +297,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     /** Set a value to preference. */
     fun putLong(keyRes : Int, value : Long?) : Prefs {
-        putLong(context.getString(keyRes), value)
-        return this
+        return putLong(context.getString(keyRes), value)
     }
     /** Set a value to preference. */
     fun putLong(key : String, value : Long?) : Prefs {
@@ -285,8 +312,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     /** Set a value to preference. */
     fun putFloat(keyRes : Int, value : Float?) : Prefs {
-        putFloat(context.getString(keyRes), value)
-        return this
+        return putFloat(context.getString(keyRes), value)
     }
     /** Set a value to preference. */
     fun putFloat(key : String, value : Float?) : Prefs {
@@ -300,9 +326,23 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     }
 
     /** Set a value to preference. */
-    fun putString(keyRes : Int, value : CharSequence?) : Prefs {
-        putString(context.getString(keyRes), value)
+    fun putDouble(keyRes : Int, value : Double?) : Prefs {
+        return putDouble(context.getString(keyRes), value)
+    }
+    /** Set a value to preference. */
+    fun putDouble(key : String, value : Double?) : Prefs {
+        if (value == null) {
+            remove(key)
+        } else {
+            editor.putLong(key, java.lang.Double.doubleToRawLongBits(value))
+        }
+        if (!beforeApply) end()
         return this
+    }
+
+    /** Set a value to preference. */
+    fun putString(keyRes : Int, value : CharSequence?) : Prefs {
+        return putString(context.getString(keyRes), value)
     }
     /** Set a value to preference. */
     fun putString(key : String, value : CharSequence?) : Prefs {
@@ -313,8 +353,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     /** Set a value to preference. */
     fun putStringSet(keyRes : Int, value : Set<String?>?) : Prefs {
-        putStringSet(context.getString(keyRes), value)
-        return this
+        return putStringSet(context.getString(keyRes), value)
     }
     /** Set a value to preference. */
     fun putStringSet(key : String, value : Set<String?>?) : Prefs {
@@ -325,8 +364,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     /** Set a value to preference. */
     fun putBin(keyRes : Int, value : ByteArray?) : Prefs {
-        putBin(context.getString(keyRes), value)
-        return this
+        return putBin(context.getString(keyRes), value)
     }
     /** Set a value to preference. */
     fun putBin(key : String, value : ByteArray?) : Prefs {
@@ -342,8 +380,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     /** Set a value to preference. */
     fun putObject(keyRes : Int, value : Any?) : Prefs {
-        putObject(context.getString(keyRes), value)
-        return this
+        return putObject(context.getString(keyRes), value)
     }
     /** Set a value to preference. */
     fun putObject(key : String, value : Any?) : Prefs {
@@ -361,8 +398,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     /** Remove preference value. */
     fun remove(keyRes : Int) : Prefs {
-        remove(context.getString(keyRes))
-        return this
+        return remove(context.getString(keyRes))
     }
     /** Remove preference value. */
     fun remove(key : String) : Prefs {
