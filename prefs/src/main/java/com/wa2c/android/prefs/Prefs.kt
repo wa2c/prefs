@@ -7,7 +7,9 @@ import android.util.Base64
 import android.util.TypedValue
 import com.google.gson.Gson
 import java.lang.reflect.Type
-
+import java.math.BigDecimal
+import java.math.BigInteger
+import java.util.*
 
 
 /**
@@ -28,6 +30,18 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     /** True if before apply. */
     private var beforeApply = false
 
+
+    val defaultBooleanValue : Boolean = false
+    val defaultByteValue : Byte = 0
+    val defaultShortValue : Short = 0
+    val defaultIntValue : Int = 0
+    val defaultLongValue : Long = 0
+    val defaultFloatValue : Float = 0.0F
+    val defaultDoubleValue : Double = 0.0
+    val defaultBigIntegerValue : BigInteger = BigInteger.ZERO
+    val defaultBigDecimalValue : BigDecimal = BigDecimal.ZERO
+    val defaultCharValue : Char = '\u0000'
+    val defaultStringValue : String = ""
 
 
     /** Check contains key. */
@@ -51,16 +65,60 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getBoolean(keyRes : Int, default: Boolean = false, defRes : Int = -1) : Boolean {
+    fun getBoolean(keyRes : Int, default: Boolean = defaultBooleanValue, defRes : Int = -1) : Boolean {
         return getBoolean(context.getString(keyRes), default, defRes)
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getBoolean(key : String, default: Boolean = false, defRes : Int = -1) : Boolean {
+    fun getBoolean(key : String, default: Boolean = defaultBooleanValue, defRes : Int = -1) : Boolean {
         return if (defRes > 0)
-            sharedPreferences.getBoolean(key, context.resources.getBoolean(defRes))
+            sharedPreferences.getBoolean(key, getResourceValue(defRes))
         else
             sharedPreferences.getBoolean(key, default)
+    }
+
+    /** Get a value from preference. */
+    fun getByteOrNull(keyRes : Int) : Byte? {
+        return getByteOrNull(context.getString(keyRes))
+    }
+    /** Get a value from preference. */
+    fun getByteOrNull(key : String) : Byte? {
+        return if (contains(key)) getByte(key) else null
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getByte(keyRes : Int, default: Byte = defaultByteValue, defRes : Int = -1) : Byte {
+        return getByte(context.getString(keyRes), default, defRes)
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getByte(key : String, default: Byte = defaultByteValue, defRes : Int = -1) : Byte {
+        return if (defRes > 0)
+            sharedPreferences.getInt(key, getResourceValue<Byte>(defRes).toInt()).toByte()
+        else
+            sharedPreferences.getInt(key, default.toInt()).toByte()
+    }
+
+    /** Get a value from preference. */
+    fun getShortOrNull(keyRes : Int) : Short? {
+        return getShortOrNull(context.getString(keyRes))
+    }
+    /** Get a value from preference. */
+    fun getShortOrNull(key : String) : Short? {
+        return if (contains(key)) getShort(key) else null
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getShort(keyRes : Int, default: Short = defaultShortValue, defRes : Int = -1) : Short {
+        return getShort(context.getString(keyRes), default, defRes)
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getShort(key : String, default: Short = defaultShortValue, defRes : Int = -1) : Short {
+        return if (defRes > 0)
+            sharedPreferences.getInt(key, getResourceValue<Short>(defRes).toInt()).toShort()
+        else
+            sharedPreferences.getInt(key, default.toInt()).toShort()
     }
 
     /** Get a value from preference. */
@@ -73,14 +131,14 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getInt(keyRes : Int, default: Int = 0, defRes : Int = -1) : Int {
+    fun getInt(keyRes : Int, default: Int = defaultIntValue, defRes : Int = -1) : Int {
         return getInt(context.getString(keyRes), default, defRes)
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getInt(key : String, default: Int = 0, defRes : Int = -1) : Int {
+    fun getInt(key : String, default: Int = defaultIntValue, defRes : Int = -1) : Int {
         return if (defRes > 0)
-            sharedPreferences.getInt(key, context.resources.getInteger(defRes))
+            sharedPreferences.getInt(key, getResourceValue(defRes))
         else
             sharedPreferences.getInt(key, default)
     }
@@ -95,14 +153,14 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getLong(keyRes : Int, default: Long = 0, defRes : Int = -1) : Long {
+    fun getLong(keyRes : Int, default: Long = defaultLongValue, defRes : Int = -1) : Long {
         return getLong(context.getString(keyRes), default, defRes)
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getLong(key : String, default: Long = 0, defRes : Int = -1) : Long {
+    fun getLong(key : String, default: Long = defaultLongValue, defRes : Int = -1) : Long {
         return if (defRes > 0)
-            sharedPreferences.getLong(key, context.resources.getInteger(defRes).toLong())
+            sharedPreferences.getLong(key, getResourceValue(defRes))
         else
             sharedPreferences.getLong(key, default)
     }
@@ -118,19 +176,16 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getFloat(keyRes : Int, default: Float = 0f, defRes : Int = -1): Float {
+    fun getFloat(keyRes : Int, default: Float = defaultFloatValue, defRes : Int = -1): Float {
         return getFloat(context.getString(keyRes), default, defRes)
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getFloat(key : String, default: Float = 0f, defRes : Int = -1) : Float {
-        return if (defRes > 0) {
-            val v = TypedValue()
-            context.resources.getValue(defRes, v, true)
-            sharedPreferences.getFloat(key, v.float)
-        } else {
+    fun getFloat(key : String, default: Float = defaultFloatValue, defRes : Int = -1) : Float {
+        return if (defRes > 0)
+            sharedPreferences.getFloat(key, getResourceValue(defRes))
+        else
             sharedPreferences.getFloat(key, default)
-        }
     }
 
     /** Get a value from preference. */
@@ -143,20 +198,75 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getDouble(keyRes : Int, default: Double = 0.0, defRes : Int = -1): Double {
+    fun getDouble(keyRes : Int, default: Double = defaultDoubleValue, defRes : Int = -1): Double {
         return getDouble(context.getString(keyRes), default, defRes)
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getDouble(key : String, default: Double = 0.0, defRes : Int = -1) : Double {
+    fun getDouble(key : String, default: Double = defaultDoubleValue, defRes : Int = -1) : Double {
         return if (contains(key)) {
             val v = sharedPreferences.getLong(key, 0)
             java.lang.Double.longBitsToDouble(v)
         } else {
             if (defRes > 0) {
-                val v = TypedValue()
-                context.resources.getValue(defRes, v, true)
-                sharedPreferences.getFloat(key, v.float).toDouble()
+                getResourceValue(defRes)
+            } else {
+                default
+            }
+        }
+    }
+
+    /** Get a value from preference. */
+    fun getBigIntegerOrNull(keyRes : Int) : BigInteger? {
+        return getBigIntegerOrNull(context.getString(keyRes))
+    }
+    /** Get a value from preference. */
+    fun getBigIntegerOrNull(key : String) : BigInteger? {
+        return if (contains(key)) getBigInteger(key) else null
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getBigInteger(keyRes : Int, default: BigInteger = defaultBigIntegerValue, defRes : Int = -1): BigInteger {
+        return getBigInteger(context.getString(keyRes), default, defRes)
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getBigInteger(key : String, default: BigInteger = defaultBigIntegerValue, defRes : Int = -1) : BigInteger {
+        return if (contains(key)) {
+            val v = sharedPreferences.getString(key, "0")
+            BigInteger(v)
+        } else {
+            if (defRes > 0) {
+                getResourceValue(defRes)
+            } else {
+                default
+            }
+        }
+    }
+
+
+    /** Get a value from preference. */
+    fun getBigDecimalOrNull(keyRes : Int) : BigDecimal? {
+        return getBigDecimalOrNull(context.getString(keyRes))
+    }
+    /** Get a value from preference. */
+    fun getBigDecimalOrNull(key : String) : BigDecimal? {
+        return if (contains(key)) getBigDecimal(key) else null
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getBigDecimal(keyRes : Int, default: BigDecimal = defaultBigDecimalValue, defRes : Int = -1): BigDecimal {
+        return getBigDecimal(context.getString(keyRes), default, defRes)
+    }
+    /** Get a value from preference. */
+    @JvmOverloads
+    fun getBigDecimal(key : String, default: BigDecimal = defaultBigDecimalValue, defRes : Int = -1) : BigDecimal {
+        return if (contains(key)) {
+            val v = sharedPreferences.getString(key, "0")
+            BigDecimal(v)
+        } else {
+            if (defRes > 0) {
+                getResourceValue(defRes)
             } else {
                 default
             }
@@ -173,14 +283,14 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getString(keyRes : Int, default: String = "", defRes : Int = -1) : String {
+    fun getString(keyRes : Int, default: String = defaultStringValue, defRes : Int = -1) : String {
         return getString(context.getString(keyRes), default, defRes)
     }
     /** Get a value from preference. */
     @JvmOverloads
-    fun getString(key : String, default: String = "", defRes : Int = -1) : String {
+    fun getString(key : String, default: String = defaultStringValue, defRes : Int = -1) : String {
         return if (defRes > 0)
-            sharedPreferences.getString(key, context.getString(defRes))
+            sharedPreferences.getString(key, getResourceValue(defRes))
         else
             sharedPreferences.getString(key, default)
     }
@@ -219,11 +329,11 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         return Base64.decode(base64Bytes, Base64.DEFAULT)
     }
     /** Get a value from preference.  */
-    fun getBin(keyRes : Int, default: ByteArray) : ByteArray {
+    fun getBin(keyRes : Int, default: ByteArray = ByteArray(0)) : ByteArray {
         return getBin(context.getString(keyRes), default)
     }
     /** Get a value from preference.  */
-    fun getBin(key : String, default: ByteArray) : ByteArray {
+    fun getBin(key : String, default: ByteArray = ByteArray(0)) : ByteArray {
         return getBinOrNull(key) ?: default
     }
 
@@ -278,6 +388,24 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
         if (!beforeApply) end()
         return this
+    }
+
+    /** Set a value to preference. */
+    fun putByte(keyRes : Int, value : Byte?) : Prefs {
+        return putByte(context.getString(keyRes), value)
+    }
+    /** Set a value to preference. */
+    fun putByte(key : String, value : Byte?) : Prefs {
+        return putInt(key, value?.toInt())
+    }
+
+    /** Set a value to preference. */
+    fun putShort(keyRes : Int, value : Short?) : Prefs {
+        return putShort(context.getString(keyRes), value)
+    }
+    /** Set a value to preference. */
+    fun putShort(key : String, value : Short?) : Prefs {
+        return putInt(key, value?.toInt())
     }
 
     /** Set a value to preference. */
@@ -338,6 +466,24 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
         if (!beforeApply) end()
         return this
+    }
+
+    /** Set a value to preference. */
+    fun putBigInteger(keyRes : Int, value : BigInteger?) : Prefs {
+        return putBigInteger(context.getString(keyRes), value)
+    }
+    /** Set a value to preference. */
+    fun putBigInteger(key : String, value : BigInteger?) : Prefs {
+        return putString(key, value?.toString())
+    }
+
+    /** Set a value to preference. */
+    fun putBigDecimal(keyRes : Int, value : BigDecimal?) : Prefs {
+        return putBigDecimal(context.getString(keyRes), value)
+    }
+    /** Set a value to preference. */
+    fun putBigDecimal(key : String, value : BigDecimal?) : Prefs {
+        return putString(key, value?.toPlainString())
     }
 
     /** Set a value to preference. */
@@ -426,4 +572,85 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         return sharedPreferences.all
     }
 
+
+
+    /**
+     * Get resource value.
+     * @param defRes A resource ID. (bool, integer, dimen, string)
+     */
+    private inline fun<reified T> getResourceValue(defRes : Int) : T {
+        if (defRes <= 0)
+            throw IllegalArgumentException()
+
+        val resourceType = context.resources.getResourceTypeName(defRes)
+        if (resourceType.isNullOrEmpty())
+            throw IllegalArgumentException()
+
+        val outputClass = T::class
+        val resourceVal = TypedValue()
+        context.resources.getValue(defRes, resourceVal, true)
+
+        if (resourceVal.type == TypedValue.TYPE_INT_BOOLEAN) {
+            val res = (resourceVal.data != 0)
+            val value : Any = when (outputClass) {
+                Boolean::class -> res
+                String::class -> res.toString()
+                else -> if (resourceVal.data == 0) 0 else 1
+            }
+            return value as T
+        } else if (resourceVal.type == TypedValue.TYPE_FIRST_INT) {
+            val res = resourceVal.data
+            val value : Any = when (outputClass) {
+                Boolean::class -> (res != 0)
+                Byte::class -> res.toByte()
+                Short::class -> res.toShort()
+                Integer::class -> res
+                Long::class -> res.toLong()
+                Float::class -> res.toFloat()
+                Double::class -> res.toDouble()
+                Char::class -> res.toChar()
+                String::class -> res.toString()
+                BigInteger::class -> res.toBigInteger()
+                BigDecimal::class -> res.toBigDecimal()
+                else -> throw ClassCastException()
+            }
+            return value as T
+        } else if (resourceVal.type == TypedValue.TYPE_FLOAT) {
+            val res = resourceVal.float
+            val value : Any = when (outputClass) {
+                Boolean::class -> (res != 0.0F)
+                Byte::class -> res.toByte()
+                Short::class -> res.toShort()
+                Integer::class -> res.toInt()
+                Long::class -> res.toLong()
+                Float::class -> res
+                Double::class -> res.toDouble()
+                Char::class -> res.toChar()
+                String::class -> res.toString()
+                BigInteger::class -> BigInteger.valueOf(res.toLong())
+                BigDecimal::class -> res.toBigDecimal()
+                else -> throw ClassCastException()
+            }
+            return value as T
+        } else if (resourceVal.type == TypedValue.TYPE_STRING) {
+            val res = context.getString(defRes)
+            val value : Any = when (outputClass) {
+                Boolean::class -> res.toBoolean()
+                Byte::class -> res.toByte()
+                Short::class -> res.toShort()
+                Integer::class -> res.toInt()
+                Long::class -> res.toLong()
+                Float::class -> res
+                Double::class -> res.toDouble()
+                Char::class -> res.toCharArray()[0]
+                String::class -> res
+                BigInteger::class -> res.toBigInteger()
+                BigDecimal::class -> res.toBigDecimal()
+                else -> throw ClassCastException()
+            }
+            return value as T
+        }
+
+        throw java.lang.ClassCastException()
+    }
 }
