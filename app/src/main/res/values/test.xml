@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <bool name="bool_value1">false</bool>
+    <integer name="int_value1">123</integer>
+    <dimen name="float_value1">0</dimen>
+    <string name="string_value1">123</string>
+
+    <item name="bool_value2" type="bool" format="boolean">true</item>
+    <item name="int_value2" type="integer" format="integer">123</item>
+    <item name="float_value2" type="dimen" format="float">1.23</item>
+    <item name="string_value2" type="string" format="string">12345</item>
+
+
+    <string name="string_bool">true</string>
+
+</resources>
