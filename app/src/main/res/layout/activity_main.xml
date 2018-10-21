@@ -1,19 +1,528 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".MainActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="1">
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <Button
+                        android:text="@string/clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/clearButton"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:text="                                       "
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="Boolean"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <CheckBox
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/booleanInputCheckBox"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/booleanSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/booleanLoadButton"/>
+
+                <CheckBox
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/booleanOutputCheckBox"/>
+
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="Byte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:digits="01234567890-"
+                        android:inputType="numberSigned"
+                        android:ems="10"
+                        android:id="@+id/byteInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/byteSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/byteLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/byteOutputTextView"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="Short"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:digits="01234567890-"
+                        android:inputType="numberSigned"
+                        android:ems="10"
+                        android:id="@+id/shortInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/shortSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/shortLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/shortOutputTextView"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="Int"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:digits="01234567890-"
+                        android:inputType="numberSigned"
+                        android:ems="10"
+                        android:id="@+id/intInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/intSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/intLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/intOutputTextView"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="Long"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:digits="01234567890-"
+                        android:inputType="numberSigned"
+                        android:ems="10"
+                        android:id="@+id/longInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/longSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/longLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/longOutputTextView"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="float"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:digits="01234567890-."
+                        android:inputType="numberSigned"
+                        android:ems="10"
+                        android:id="@+id/floatInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/floatSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/floatLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/floatOutputTextView"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="double"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:digits="01234567890-."
+                        android:inputType="numberSigned"
+                        android:ems="10"
+                        android:id="@+id/doubleInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/doubleSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/doubleLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/doubleOutputTextView"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="BigInteger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:digits="01234567890-"
+                        android:inputType="numberSigned"
+                        android:ems="10"
+                        android:id="@+id/bigIntegerInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bigIntegerSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bigIntegerLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/bigIntegerOutputTextView"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="BigDecimal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:digits="01234567890-."
+                        android:inputType="numberDecimal"
+                        android:ems="10"
+                        android:id="@+id/bigDecimalInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bigDecimalSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bigDecimalLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/bigDecimalOutputTextView"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="Char"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:ems="10"
+                        android:maxLength="1"
+                        android:id="@+id/charInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/charSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/charLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/charOutputTextView"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="String"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:ems="10"
+                        android:id="@+id/stringInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/stringSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/stringLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/stringOutputTextView"/>
+            </TableRow>
+
+
+        </TableLayout>
+
+    </ScrollView>
+
+</layout>

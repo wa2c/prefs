@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+    <string name="prefkey_boolean">prefkey_boolean</string>
+    <string name="prefkey_byte">prefkey_byte</string>
+    <string name="prefkey_short">prefkey_short</string>
+    <string name="prefkey_int">prefkey_int</string>
+    <string name="prefkey_long">prefkey_long</string>
+    <string name="prefkey_float">prefkey_float</string>
+    <string name="prefkey_double">prefkey_double</string>
+    <string name="prefkey_big_integer">prefkey_big_integer</string>
+    <string name="prefkey_big_decimal">prefkey_big_decimal</string>
+    <string name="prefkey_char">prefkey_char</string>
+    <string name="prefkey_string">prefkey_string</string>
+    <string name="prefkey_string_set">prefkey_string_set</string>
+
+
+
     <bool name="bool_value1">false</bool>
     <integer name="int_value1">123</integer>
     <dimen name="float_value1">0</dimen>
@@ -14,4 +30,16 @@
 
     <string name="string_bool">true</string>
 
+    <integer-array name="array_int1">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </integer-array>
+
+
+    <string-array name="array_string1">
+        <item>@string/string_value1</item>
+        <item>b</item>
+        <item>c</item>
+    </string-array>
 </resources>
