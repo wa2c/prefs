@@ -318,16 +318,8 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     /** Get a value from preference. */
     @JvmOverloads
     fun getStringSet(key : String, default: Set<String?> = defaultStringSetValue, defRes : Int = -1) : Set<String?> {
-        val v = getStringSetOrNull(key)
-        return if (v != null) {
-            return v
-        } else {
-            if (defRes > 0)
-                context.resources.getStringArray(defRes).toSet()
-            else
-                default
-        }
-    }
+        return getStringSetOrNull(key) ?: getDefaultValue(default, defRes)
+     }
     /** Get a value from preference. */
     fun getStringSetOrNull(keyRes : Int) : Set<String?>? {
         return getStringSetOrNull(context.getString(keyRes))
@@ -359,11 +351,11 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     /** Get a value from preference. */
     inline fun <reified T> getObject(keyRes: Int, default: T) : T {
-        return getObjectOrNull(keyRes) ?: default
+        return getObject(keyRes, T::class.javaClass, default)
     }
     /** Get a value from preference. */
     inline fun <reified T> getObject(key: String, default: T) : T {
-        return getObjectOrNull(key) ?: default
+        return getObject(key, T::class.javaClass, default)
     }
     /** Get a value from preference. */
     fun <T> getObject(keyRes: Int, classOfT: Class<T>, default: T): T {
@@ -629,70 +621,82 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
             return default
 
         val outputClass = T::class
-        val resourceVal = TypedValue()
-        context.resources.getValue(defRes, resourceVal, true)
 
-        if (resourceVal.type == TypedValue.TYPE_INT_BOOLEAN) {
-            val res = context.resources.getBoolean(defRes)
+        val typeName = context.resources.getResourceTypeName(defRes)
+        if (typeName == "array") {
+            // array
+            val res = context.resources.getStringArray(defRes)
             val value : Any = when (outputClass) {
-                Boolean::class -> res
-                String::class -> res.toString()
-                else -> throw ClassCastException()
+                Set::class -> res.toSet()
+                else -> throw ClassCastException("Invalid resource.")
             }
             return value as T
-        } else if (resourceVal.type == TypedValue.TYPE_FIRST_INT) {
-            val res = resourceVal.data
-            val value : Any = when (outputClass) {
-                Boolean::class -> (res != 0)
-                Byte::class -> res.toByte()
-                Short::class -> res.toShort()
-                Integer::class -> res
-                Long::class -> res.toLong()
-                Float::class -> res.toFloat()
-                Double::class -> res.toDouble()
-                Char::class -> res.toChar()
-                String::class -> res.toString()
-                BigInteger::class -> res.toBigInteger()
-                BigDecimal::class -> res.toBigDecimal()
-                else -> throw ClassCastException()
+        } else {
+            val resourceVal = TypedValue()
+            context.resources.getValue(defRes, resourceVal, true)
+
+            if (resourceVal.type == TypedValue.TYPE_INT_BOOLEAN) {
+                val res = context.resources.getBoolean(defRes)
+                val value : Any = when (outputClass) {
+                    Boolean::class -> res
+                    String::class -> res.toString()
+                    else -> throw ClassCastException("Invalid resource.")
+                }
+                return value as T
+            } else if (resourceVal.type == TypedValue.TYPE_FIRST_INT) {
+                val res = resourceVal.data
+                val value : Any = when (outputClass) {
+                    Boolean::class -> (res != 0)
+                    Byte::class -> res.toByte()
+                    Short::class -> res.toShort()
+                    Integer::class -> res
+                    Long::class -> res.toLong()
+                    Float::class -> res.toFloat()
+                    Double::class -> res.toDouble()
+                    Char::class -> res.toChar()
+                    String::class -> res.toString()
+                    BigInteger::class -> res.toBigInteger()
+                    BigDecimal::class -> res.toBigDecimal()
+                    else -> throw ClassCastException("Invalid resource.")
+                }
+                return value as T
+            } else if (resourceVal.type == TypedValue.TYPE_FLOAT) {
+                val res = resourceVal.float
+                val value : Any = when (outputClass) {
+                    Boolean::class -> (res != 0.0F)
+                    Byte::class -> res.toByte()
+                    Short::class -> res.toShort()
+                    Integer::class -> res.toInt()
+                    Long::class -> res.toLong()
+                    Float::class -> res
+                    Double::class -> res.toDouble()
+                    Char::class -> res.toChar()
+                    String::class -> res.toString()
+                    BigInteger::class -> BigInteger.valueOf(res.toLong())
+                    BigDecimal::class -> res.toBigDecimal()
+                    else -> throw ClassCastException("Invalid resource.")
+                }
+                return value as T
+            } else if (resourceVal.type == TypedValue.TYPE_STRING) {
+                val res = context.getString(defRes)
+                val value : Any = when (outputClass) {
+                    Boolean::class -> res.toBoolean()
+                    Byte::class -> res.toByte()
+                    Short::class -> res.toShort()
+                    Integer::class -> res.toInt()
+                    Long::class -> res.toLong()
+                    Float::class -> res.toFloat()
+                    Double::class -> res.toDouble()
+                    Char::class -> res[0]
+                    String::class -> res
+                    BigInteger::class -> res.toBigInteger()
+                    BigDecimal::class -> res.toBigDecimal()
+                    else -> throw ClassCastException("Invalid resource.")
+                }
+                return value as T
             }
-            return value as T
-        } else if (resourceVal.type == TypedValue.TYPE_FLOAT) {
-            val res = resourceVal.float
-            val value : Any = when (outputClass) {
-                Boolean::class -> (res != 0.0F)
-                Byte::class -> res.toByte()
-                Short::class -> res.toShort()
-                Integer::class -> res.toInt()
-                Long::class -> res.toLong()
-                Float::class -> res
-                Double::class -> res.toDouble()
-                Char::class -> res.toChar()
-                String::class -> res.toString()
-                BigInteger::class -> BigInteger.valueOf(res.toLong())
-                BigDecimal::class -> res.toBigDecimal()
-                else -> throw ClassCastException()
-            }
-            return value as T
-        } else if (resourceVal.type == TypedValue.TYPE_STRING) {
-            val res = context.getString(defRes)
-            val value : Any = when (outputClass) {
-                Boolean::class -> res.toBoolean()
-                Byte::class -> res.toByte()
-                Short::class -> res.toShort()
-                Integer::class -> res.toInt()
-                Long::class -> res.toLong()
-                Float::class -> res.toFloat()
-                Double::class -> res.toDouble()
-                Char::class -> res[0]
-                String::class -> res
-                BigInteger::class -> res.toBigInteger()
-                BigDecimal::class -> res.toBigDecimal()
-                else -> throw ClassCastException()
-            }
-            return value as T
         }
 
-        throw java.lang.ClassCastException()
+        throw  ClassCastException("Invalid resource.")
     }
 }
