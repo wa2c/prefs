@@ -9,30 +9,18 @@ import android.view.View
 import android.widget.Toast
 import com.wa2c.android.prefs.Prefs
 import kotlinx.android.synthetic.main.activity_main.*
+import java.math.BigInteger
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var prefs : Prefs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         prefs = Prefs(this)
-
-//        Log.d("test", resources.getResourceTypeName(R.bool.bool_value1))
-//        Log.d("test", resources.getResourceTypeName(R.integer.int_value1))
-//        Log.d("test", resources.getResourceTypeName(R.dimen.float_value1))
-//        Log.d("test", resources.getResourceTypeName(R.string.string_value1))
-//        Log.d("test", resources.getResourceTypeName(R.bool.bool_value2))
-//        Log.d("test", resources.getResourceTypeName(R.integer.int_value2))
-//        Log.d("test", resources.getResourceTypeName(R.dimen.float_value2))
-//        Log.d("test", resources.getResourceTypeName(R.string.string_value2))
-
         initialize()
-
     }
 
     private fun initialize() {

@@ -6,6 +6,7 @@ import android.preference.PreferenceManager
 import android.util.Base64
 import android.util.TypedValue
 import com.google.gson.Gson
+import java.io.*
 import java.lang.reflect.Type
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -46,6 +47,8 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     var defaultBinValue : ByteArray = ByteArray(0)
 
 
+    // Contains
+
     /** Check contains key. */
     fun contains(keyRes : Int) : Boolean {
         return contains(context.getString(keyRes))
@@ -57,22 +60,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
+    // Get
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getBoolean(keyRes : Int, default: Boolean = defaultBooleanValue, defRes : Int = -1) : Boolean {
+    fun getBoolean(keyRes: Int, default: Boolean = defaultBooleanValue, defRes: Int = -1): Boolean {
         return getBoolean(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getBoolean(key : String, default: Boolean = defaultBooleanValue, defRes : Int = -1) : Boolean {
+    fun getBoolean(key: String, default: Boolean = defaultBooleanValue, defRes: Int = -1): Boolean {
         return getBooleanOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getBooleanOrNull(keyRes : Int) : Boolean? {
+    fun getBooleanOrNull(keyRes: Int): Boolean? {
         return getBooleanOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getBooleanOrNull(key : String) : Boolean? {
+    fun getBooleanOrNull(key: String): Boolean? {
         return if (contains(key)) {
             sharedPreferences.getBoolean(key, false)
         } else {
@@ -80,22 +88,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getByte(keyRes : Int, default: Byte = defaultByteValue, defRes : Int = -1) : Byte {
+    fun getByte(keyRes: Int, default: Byte = defaultByteValue, defRes: Int = -1): Byte {
         return getByte(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getByte(key : String, default: Byte = defaultByteValue, defRes : Int = -1) : Byte {
+    fun getByte(key: String, default: Byte = defaultByteValue, defRes: Int = -1): Byte {
         return getByteOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getByteOrNull(keyRes : Int) : Byte? {
+    fun getByteOrNull(keyRes: Int): Byte? {
         return getByteOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getByteOrNull(key : String) : Byte? {
+    fun getByteOrNull(key: String): Byte? {
         return if (contains(key)) {
             sharedPreferences.getInt(key, 0).toByte()
         } else {
@@ -103,22 +116,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getShort(keyRes : Int, default: Short = defaultShortValue, defRes : Int = -1) : Short {
+    fun getShort(keyRes: Int, default: Short = defaultShortValue, defRes: Int = -1): Short {
         return getShort(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getShort(key : String, default: Short = defaultShortValue, defRes : Int = -1) : Short {
+    fun getShort(key: String, default: Short = defaultShortValue, defRes: Int = -1): Short {
         return getShortOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getShortOrNull(keyRes : Int) : Short? {
+    fun getShortOrNull(keyRes: Int): Short? {
         return getShortOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getShortOrNull(key : String) : Short? {
+    fun getShortOrNull(key: String): Short? {
         return if (contains(key)) {
             sharedPreferences.getInt(key, 0).toShort()
         } else {
@@ -126,22 +144,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getInt(keyRes : Int, default: Int = defaultIntValue, defRes : Int = -1) : Int {
+    fun getInt(keyRes: Int, default: Int = defaultIntValue, defRes: Int = -1): Int {
         return getInt(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getInt(key : String, default: Int = defaultIntValue, defRes : Int = -1) : Int {
+    fun getInt(key: String, default: Int = defaultIntValue, defRes: Int = -1): Int {
         return getIntOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getIntOrNull(keyRes : Int) : Int? {
+    fun getIntOrNull(keyRes: Int): Int? {
         return getIntOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getIntOrNull(key : String) : Int? {
+    fun getIntOrNull(key: String): Int? {
         return if (contains(key)) {
             sharedPreferences.getInt(key, 0)
         } else {
@@ -149,22 +172,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getLong(keyRes : Int, default: Long = defaultLongValue, defRes : Int = -1) : Long {
+    fun getLong(keyRes: Int, default: Long = defaultLongValue, defRes: Int = -1): Long {
         return getLong(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getLong(key : String, default: Long = defaultLongValue, defRes : Int = -1) : Long {
+    fun getLong(key: String, default: Long = defaultLongValue, defRes: Int = -1): Long {
         return getLongOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getLongOrNull(keyRes : Int) : Long? {
+    fun getLongOrNull(keyRes: Int): Long? {
         return getLongOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getLongOrNull(key : String) : Long? {
+    fun getLongOrNull(key: String): Long? {
         return if (contains(key)) {
             sharedPreferences.getLong(key, 0)
         } else {
@@ -172,22 +200,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getFloat(keyRes : Int, default: Float = defaultFloatValue, defRes : Int = -1): Float {
+    fun getFloat(keyRes: Int, default: Float = defaultFloatValue, defRes: Int = -1): Float {
         return getFloat(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getFloat(key : String, default: Float = defaultFloatValue, defRes : Int = -1) : Float {
+    fun getFloat(key: String, default: Float = defaultFloatValue, defRes: Int = -1): Float {
         return getFloatOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getFloatOrNull(keyRes : Int) : Float? {
+    fun getFloatOrNull(keyRes: Int): Float? {
         return getFloatOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getFloatOrNull(key : String) : Float? {
+    fun getFloatOrNull(key: String): Float? {
         return if (contains(key)) {
             sharedPreferences.getFloat(key, 0F)
         } else {
@@ -195,22 +228,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getDouble(keyRes : Int, default: Double = defaultDoubleValue, defRes : Int = -1): Double {
+    fun getDouble(keyRes: Int, default: Double = defaultDoubleValue, defRes: Int = -1): Double {
         return getDouble(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getDouble(key : String, default: Double = defaultDoubleValue, defRes : Int = -1) : Double {
+    fun getDouble(key: String, default: Double = defaultDoubleValue, defRes: Int = -1): Double {
         return getDoubleOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getDoubleOrNull(keyRes : Int) : Double? {
+    fun getDoubleOrNull(keyRes: Int): Double? {
         return getDoubleOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getDoubleOrNull(key : String) : Double? {
+    fun getDoubleOrNull(key: String): Double? {
         return if (contains(key)) {
             val v = sharedPreferences.getLong(key, 0)
             java.lang.Double.longBitsToDouble(v)
@@ -219,22 +257,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getBigInteger(keyRes : Int, default: BigInteger = defaultBigIntegerValue, defRes : Int = -1): BigInteger {
+    fun getBigInteger(keyRes: Int, default: BigInteger = defaultBigIntegerValue, defRes: Int = -1): BigInteger {
         return getBigInteger(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getBigInteger(key : String, default: BigInteger = defaultBigIntegerValue, defRes : Int = -1) : BigInteger {
+    fun getBigInteger(key: String, default: BigInteger = defaultBigIntegerValue, defRes: Int = -1): BigInteger {
         return getBigIntegerOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getBigIntegerOrNull(keyRes : Int) : BigInteger? {
+    fun getBigIntegerOrNull(keyRes: Int): BigInteger? {
         return getBigIntegerOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getBigIntegerOrNull(key : String) : BigInteger? {
+    fun getBigIntegerOrNull(key: String): BigInteger? {
         val v = getStringOrNull(key)
         return if (v != null) {
             BigInteger(v)
@@ -243,22 +286,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getBigDecimal(keyRes : Int, default: BigDecimal = defaultBigDecimalValue, defRes : Int = -1): BigDecimal {
+    fun getBigDecimal(keyRes: Int, default: BigDecimal = defaultBigDecimalValue, defRes: Int = -1): BigDecimal {
         return getBigDecimal(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getBigDecimal(key : String, default: BigDecimal = defaultBigDecimalValue, defRes : Int = -1) : BigDecimal {
+    fun getBigDecimal(key: String, default: BigDecimal = defaultBigDecimalValue, defRes: Int = -1): BigDecimal {
         return getBigDecimalOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getBigDecimalOrNull(keyRes : Int) : BigDecimal? {
+    fun getBigDecimalOrNull(keyRes: Int): BigDecimal? {
         return getBigDecimalOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getBigDecimalOrNull(key : String) : BigDecimal? {
+    fun getBigDecimalOrNull(key: String): BigDecimal? {
         val v = getStringOrNull(key)
         return if (v != null) {
             BigDecimal(v)
@@ -267,22 +315,27 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getChar(keyRes : Int, default: Char = defaultCharValue, defRes : Int = -1) : Char {
+    fun getChar(keyRes: Int, default: Char = defaultCharValue, defRes: Int = -1): Char {
         return getChar(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getChar(key : String, default: Char = defaultCharValue, defRes : Int = -1) : Char {
-        return  getCharOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getChar(key: String, default: Char = defaultCharValue, defRes: Int = -1): Char {
+        return getCharOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getCharOrNull(keyRes : Int) : Char? {
+    fun getCharOrNull(keyRes: Int): Char? {
         return getCharOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getCharOrNull(key : String) : Char? {
+    fun getCharOrNull(key: String): Char? {
         val v = sharedPreferences.getString(key, null)
         return if (!v.isNullOrEmpty()) {
             v[0]
@@ -291,109 +344,185 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         }
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getString(keyRes : Int, default: String = defaultStringValue, defRes : Int = -1) : String {
+    fun getString(keyRes: Int, default: String = defaultStringValue, defRes: Int = -1): String {
         return getString(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getString(key : String, default: String = defaultStringValue, defRes : Int = -1) : String {
+    fun getString(key: String, default: String = defaultStringValue, defRes: Int = -1): String {
         return getStringOrNull(key) ?: getDefaultValue(default, defRes)
     }
+
     /** Get a value from preference. */
-    fun getStringOrNull(keyRes : Int) : String? {
+    fun getStringOrNull(keyRes: Int): String? {
         return getStringOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getStringOrNull(key : String) : String? {
+    fun getStringOrNull(key: String): String? {
         return sharedPreferences.getString(key, null)
     }
 
+
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getStringSet(keyRes : Int, default: Set<String?> = defaultStringSetValue, defRes : Int = -1) : Set<String?> {
+    fun getStringSet(keyRes: Int, default: Set<String?> = defaultStringSetValue, defRes: Int = -1): Set<String?> {
         return getStringSet(context.getString(keyRes), default, defRes)
     }
+
     /** Get a value from preference. */
     @JvmOverloads
-    fun getStringSet(key : String, default: Set<String?> = defaultStringSetValue, defRes : Int = -1) : Set<String?> {
+    fun getStringSet(key: String, default: Set<String?> = defaultStringSetValue, defRes: Int = -1): Set<String?> {
         return getStringSetOrNull(key) ?: getDefaultValue(default, defRes)
-     }
+    }
+
     /** Get a value from preference. */
-    fun getStringSetOrNull(keyRes : Int) : Set<String?>? {
+    fun getStringSetOrNull(keyRes: Int): Set<String?>? {
         return getStringSetOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference. */
-    fun getStringSetOrNull(key : String) : Set<String?>? {
+    fun getStringSetOrNull(key: String): Set<String?>? {
         return sharedPreferences.getStringSet(key, null)
     }
 
+
+
     /** Get a value from preference.  */
-    fun getBin(keyRes : Int, default: ByteArray = defaultBinValue) : ByteArray {
+    fun getBin(keyRes: Int, default: ByteArray = defaultBinValue): ByteArray {
         return getBin(context.getString(keyRes), default)
     }
+
     /** Get a value from preference.  */
-    fun getBin(key : String, default: ByteArray = defaultBinValue) : ByteArray {
+    fun getBin(key: String, default: ByteArray = defaultBinValue): ByteArray {
         return getBinOrNull(key) ?: default
     }
+
     /** Get a value from preference. */
-    fun getBinOrNull(keyRes : Int) : ByteArray? {
+    fun getBinOrNull(keyRes: Int): ByteArray? {
         return getBinOrNull(context.getString(keyRes))
     }
+
     /** Get a value from preference.  */
-    fun getBinOrNull(key : String) : ByteArray? {
+    fun getBinOrNull(key: String): ByteArray? {
         val base64Bytes = getStringOrNull(key)
         if (base64Bytes.isNullOrEmpty())
             return null
         return Base64.decode(base64Bytes, Base64.DEFAULT)
     }
 
+
+
     /** Get a value from preference. */
-    inline fun <reified T> getObject(keyRes: Int, default: T) : T {
-        return getObject(keyRes, T::class.javaClass, default)
+    inline fun <reified T : Serializable> getSerializable(keyRes: Int, default: T): T {
+        return getSerializable(keyRes, T::class.java, default)
     }
+
     /** Get a value from preference. */
-    inline fun <reified T> getObject(key: String, default: T) : T {
-        return getObject(key, T::class.javaClass, default)
+    inline fun <reified T : Serializable> getSerializable(key: String, default: T): T {
+        return getSerializable(key, T::class.java, default)
     }
+
+    /** Get a value from preference.  */
+    fun <T : Serializable> getSerializable(keyRes: Int, classOfT: Class<T>, default: T): T {
+        return getSerializable(context.getString(keyRes), classOfT, default)
+    }
+
+    /** Get a value from preference.  */
+    fun <T : Serializable> getSerializable(key: String, classOfT: Class<T>, default: T): T {
+        return getSerializableOrNull(key, classOfT) ?: default
+    }
+
+    /** Get a value from preference. */
+    inline fun <reified T : Serializable> getSerializableOrNull(keyRes: Int): T? {
+        return getSerializableOrNull(keyRes, T::class.java)
+    }
+
+    /** Get a value from preference. */
+    inline fun <reified T : Serializable> getSerializableOrNull(key: String): T? {
+        return getSerializableOrNull(key, T::class.java)
+    }
+
+    /** Get a value from preference.  */
+    fun <T : Serializable> getSerializableOrNull(keyRes: Int, classOfT: Class<T>): T? {
+        return getSerializableOrNull(context.getString(keyRes), classOfT)
+    }
+
+    /** Get a value from preference.  */
+    fun <T : Serializable> getSerializableOrNull(key: String, classOfT: Class<T>): T? {
+        val value = getBinOrNull(key)
+        if (value == null || value.isEmpty()) {
+            return null
+        }
+        ObjectInputStream(ByteArrayInputStream(value)).use {
+            return it.readObject() as T?
+        }
+    }
+
+
+
+    /** Get a value from preference. */
+    inline fun <reified T> getObject(keyRes: Int, default: T): T {
+        return getObject(keyRes, T::class.java, default)
+    }
+
+    /** Get a value from preference. */
+    inline fun <reified T> getObject(key: String, default: T): T {
+        return getObject(key, T::class.java, default)
+    }
+
     /** Get a value from preference. */
     fun <T> getObject(keyRes: Int, classOfT: Class<T>, default: T): T {
         return getObject(context.getString(keyRes), classOfT, default)
     }
+
     /** Get a value from preference.  */
     fun <T> getObject(key: String, classOfT: Class<T>, default: T): T {
         return getObjectOrNull(key, classOfT) ?: default
     }
+
     /** Get a value from preference. */
     fun <T> getObject(keyRes: Int, typeOfT: Type, default: T): T {
         return getObject(context.getString(keyRes), typeOfT, default)
     }
+
     /** Get a value from preference.  */
     fun <T> getObject(key: String, typeOfT: Type, default: T): T {
         return getObjectOrNull(key, typeOfT) ?: default
     }
+
     /** Get a value from preference. */
-    inline fun <reified T> getObjectOrNull(keyRes: Int) : T? {
+    inline fun <reified T> getObjectOrNull(keyRes: Int): T? {
         return getObjectOrNull(keyRes, T::class.java)
     }
+
     /** Get a value from preference. */
-    inline fun <reified T> getObjectOrNull(key: String) : T? {
+    inline fun <reified T> getObjectOrNull(key: String): T? {
         return getObjectOrNull(key, T::class.java)
     }
+
     /** Get a value from preference. */
     fun <T> getObjectOrNull(keyRes: Int, classOfT: Class<T>): T? {
         return getObjectOrNull(context.getString(keyRes), classOfT)
     }
+
     /** Get a value from preference.  */
     fun <T> getObjectOrNull(key: String, classOfT: Class<T>): T? {
         val json = sharedPreferences.getString(key, null)
         return gson.fromJson(json, classOfT)
     }
+
     /** Get a value from preference. */
     fun <T> getObjectOrNull(keyRes: Int, typeOfT: Type): T? {
         return getObjectOrNull(context.getString(keyRes), typeOfT)
     }
+
     /** Get a value from preference.  */
     fun <T> getObjectOrNull(key: String, typeOfT: Type): T? {
         val json = sharedPreferences.getString(key, null)
@@ -402,12 +531,15 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
+    // Put
+
     /** Set a value to preference. */
-    fun putBoolean(keyRes : Int, value : Boolean?) : Prefs {
+    fun putBoolean(keyRes: Int, value: Boolean?): Prefs {
         return putBoolean(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putBoolean(key : String, value : Boolean?) : Prefs {
+    fun putBoolean(key: String, value: Boolean?): Prefs {
         if (value == null) {
             remove(key)
         } else {
@@ -417,30 +549,39 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         return this
     }
 
+
+
     /** Set a value to preference. */
-    fun putByte(keyRes : Int, value : Byte?) : Prefs {
+    fun putByte(keyRes: Int, value: Byte?): Prefs {
         return putByte(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putByte(key : String, value : Byte?) : Prefs {
+    fun putByte(key: String, value: Byte?): Prefs {
         return putInt(key, value?.toInt())
     }
 
+
+
     /** Set a value to preference. */
-    fun putShort(keyRes : Int, value : Short?) : Prefs {
+    fun putShort(keyRes: Int, value: Short?): Prefs {
         return putShort(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putShort(key : String, value : Short?) : Prefs {
+    fun putShort(key: String, value: Short?): Prefs {
         return putInt(key, value?.toInt())
     }
 
+
+
     /** Set a value to preference. */
-    fun putInt(keyRes : Int, value : Int?) : Prefs {
+    fun putInt(keyRes: Int, value: Int?): Prefs {
         return putInt(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putInt(key : String, value : Int?) : Prefs {
+    fun putInt(key: String, value: Int?): Prefs {
         if (value == null) {
             remove(key)
         } else {
@@ -450,12 +591,15 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         return this
     }
 
+
+
     /** Set a value to preference. */
-    fun putLong(keyRes : Int, value : Long?) : Prefs {
+    fun putLong(keyRes: Int, value: Long?): Prefs {
         return putLong(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putLong(key : String, value : Long?) : Prefs {
+    fun putLong(key: String, value: Long?): Prefs {
         if (value == null) {
             remove(key)
         } else {
@@ -465,12 +609,15 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         return this
     }
 
+
+
     /** Set a value to preference. */
-    fun putFloat(keyRes : Int, value : Float?) : Prefs {
+    fun putFloat(keyRes: Int, value: Float?): Prefs {
         return putFloat(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putFloat(key : String, value : Float?) : Prefs {
+    fun putFloat(key: String, value: Float?): Prefs {
         if (value == null) {
             remove(key)
         } else {
@@ -480,12 +627,15 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         return this
     }
 
+
+
     /** Set a value to preference. */
-    fun putDouble(keyRes : Int, value : Double?) : Prefs {
+    fun putDouble(keyRes: Int, value: Double?): Prefs {
         return putDouble(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putDouble(key : String, value : Double?) : Prefs {
+    fun putDouble(key: String, value: Double?): Prefs {
         if (value == null) {
             remove(key)
         } else {
@@ -495,63 +645,81 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         return this
     }
 
+
+
     /** Set a value to preference. */
-    fun putBigInteger(keyRes : Int, value : BigInteger?) : Prefs {
+    fun putBigInteger(keyRes: Int, value: BigInteger?): Prefs {
         return putBigInteger(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putBigInteger(key : String, value : BigInteger?) : Prefs {
+    fun putBigInteger(key: String, value: BigInteger?): Prefs {
         return putString(key, value?.toString())
     }
 
+
+
     /** Set a value to preference. */
-    fun putBigDecimal(keyRes : Int, value : BigDecimal?) : Prefs {
+    fun putBigDecimal(keyRes: Int, value: BigDecimal?): Prefs {
         return putBigDecimal(context.getString(keyRes), value)
-    }
-    /** Set a value to preference. */
-    fun putBigDecimal(key : String, value : BigDecimal?) : Prefs {
-        return putString(key, value?.toPlainString())
     }
 
     /** Set a value to preference. */
-    fun putChar(keyRes : Int, value : Char?) : Prefs {
+    fun putBigDecimal(key: String, value: BigDecimal?): Prefs {
+        return putString(key, value?.toPlainString())
+    }
+
+
+
+    /** Set a value to preference. */
+    fun putChar(keyRes: Int, value: Char?): Prefs {
         return putChar(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putChar(key : String, value : Char?) : Prefs {
+    fun putChar(key: String, value: Char?): Prefs {
         editor.putString(key, value.toString())
         if (!beforeApply) end()
         return this
     }
 
+
+
     /** Set a value to preference. */
-    fun putString(keyRes : Int, value : CharSequence?) : Prefs {
+    fun putString(keyRes: Int, value: CharSequence?): Prefs {
         return putString(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putString(key : String, value : CharSequence?) : Prefs {
+    fun putString(key: String, value: CharSequence?): Prefs {
         editor.putString(key, value?.toString())
         if (!beforeApply) end()
         return this
     }
 
+
+
     /** Set a value to preference. */
-    fun putStringSet(keyRes : Int, value : Set<String?>?) : Prefs {
+    fun putStringSet(keyRes: Int, value: Set<String?>?): Prefs {
         return putStringSet(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putStringSet(key : String, value : Set<String?>?) : Prefs {
+    fun putStringSet(key: String, value: Set<String?>?): Prefs {
         editor.putStringSet(key, value)
         if (!beforeApply) end()
         return this
     }
 
+
+
     /** Set a value to preference. */
-    fun putBin(keyRes : Int, value : ByteArray?) : Prefs {
+    fun putBin(keyRes: Int, value: ByteArray?): Prefs {
         return putBin(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putBin(key : String, value : ByteArray?) : Prefs {
+    fun putBin(key: String, value: ByteArray?): Prefs {
         if (value == null) {
             editor.putString(key, null)
         } else {
@@ -562,12 +730,38 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         return this
     }
 
+
+
     /** Set a value to preference. */
-    fun putObject(keyRes : Int, value : Any?) : Prefs {
+    fun putSerializable(keyRes: Int, value: Serializable?): Prefs {
+        return putSerializable(context.getString(keyRes), value)
+    }
+
+    /** Get a value from preference.  */
+    fun putSerializable(key: String, value: Serializable?): Prefs {
+        if (value == null) {
+            editor.putString(key, null)
+        } else {
+            ByteArrayOutputStream().use {
+                ObjectOutputStream(it).use {
+                    it.writeObject(value)
+                }
+                putBin(key, it.toByteArray())
+            }
+        }
+        if (!beforeApply) end()
+        return this
+    }
+
+
+
+    /** Set a value to preference. */
+    fun putObject(keyRes: Int, value: Any?): Prefs {
         return putObject(context.getString(keyRes), value)
     }
+
     /** Set a value to preference. */
-    fun putObject(key : String, value : Any?) : Prefs {
+    fun putObject(key: String, value: Any?): Prefs {
         if (value == null) {
             editor.putString(key, null)
         } else {
@@ -580,6 +774,8 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
+    // Remove
+
     /** Remove preference value. */
     fun remove(keyRes : Int) : Prefs {
         return remove(context.getString(keyRes))
@@ -590,6 +786,9 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         if (!beforeApply) end()
         return this
     }
+
+
+    // Begin / End
 
     /** Begin putting. */
     fun begin() : Prefs {
@@ -604,6 +803,8 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         beforeApply = false
     }
 
+
+    // All
 
     /** Get all values. */
     fun all() : Map<String, *> {
@@ -624,7 +825,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
         val typeName = context.resources.getResourceTypeName(defRes)
         if (typeName == "array") {
-            // array
+            // string-array
             val res = context.resources.getStringArray(defRes)
             val value : Any = when (outputClass) {
                 Set::class -> res.toSet()
