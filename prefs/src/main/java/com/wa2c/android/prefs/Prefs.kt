@@ -54,7 +54,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         return contains(context.getString(keyRes))
     }
     /** Check contains key. */
-    fun contains(key : String?) : Boolean {
+    fun contains(key : String) : Boolean {
         return sharedPreferences.contains(key)
     }
 
