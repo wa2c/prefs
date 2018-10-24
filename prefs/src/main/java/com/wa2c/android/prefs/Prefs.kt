@@ -14,46 +14,70 @@ import java.util.*
 
 
 /**
- * Preferences controller.
+ * SharedPreferences wrapper.
+ * @param context A context.
+ * @param name The preferences file name. Use default shared preferences if null.
  */
 class Prefs @JvmOverloads constructor(private val context: Context, name : String? = null) {
 
-    /** Preferences. */
-    val sharedPreferences : SharedPreferences = if (name == null) {
+    /** SharedPreferences. */
+    val sharedPreferences : SharedPreferences = if (name.isNullOrEmpty()) {
         PreferenceManager.getDefaultSharedPreferences(context)
     } else {
         context.getSharedPreferences(name, Context.MODE_PRIVATE)
     }
+    /** SharedPreferences.Editor */
+    private val editor = sharedPreferences.edit()
     /** Gson. */
     private val gson : Gson by lazy { Gson() }
-    /** Editor */
-    private val editor = sharedPreferences.edit()
-    /** True if before apply. */
-    private var beforeApply = false
 
-
+    /** The default boolean value. */
     var defaultBooleanValue : Boolean = false
+    /** The default byte value. */
     var defaultByteValue : Byte = 0
+    /** The default short value. */
     var defaultShortValue : Short = 0
+    /** The default int value. */
     var defaultIntValue : Int = 0
+    /** The default long value. */
     var defaultLongValue : Long = 0
+    /** The default float value. */
     var defaultFloatValue : Float = 0.0F
+    /** The default double value. */
     var defaultDoubleValue : Double = 0.0
+    /** The default BigInteger value. */
     var defaultBigIntegerValue : BigInteger = BigInteger.ZERO
+    /** The default BigDecimal value. */
     var defaultBigDecimalValue : BigDecimal = BigDecimal.ZERO
+    /** The default char value. */
     var defaultCharValue : Char = '\u0000'
+    /** The default String value. */
     var defaultStringValue : String = ""
-    var defaultStringSetValue : Set<String> = HashSet()
+    /** The default String set value. */
+    var defaultStringSetValue : Set<String> = HashSet(0)
+    /** The default byte array value. */
     var defaultBinValue : ByteArray = ByteArray(0)
+
+    /** True if editing before applying. */
+    private var beforeApply = false
 
 
     // Contains
 
-    /** Check contains key. */
+    /**
+     * Checks whether the preferences contains a preference.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns true if the preference exists in the preferences, otherwise false.
+     */
     fun contains(keyRes : Int) : Boolean {
         return contains(context.getString(keyRes))
     }
-    /** Check contains key. */
+
+    /**
+     * Checks whether the preferences contains a preference to check.
+     * @param key The preference name.
+     * @return Returns true if the preference exists in the preferences, otherwise false.
+     */
     fun contains(key : String) : Boolean {
         return sharedPreferences.contains(key)
     }
@@ -62,24 +86,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     // Get
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a boolean value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getBoolean(keyRes: Int, default: Boolean = defaultBooleanValue, defRes: Int = -1): Boolean {
-        return getBoolean(context.getString(keyRes), default, defRes)
+    fun getBoolean(keyRes: Int, defValue: Boolean = defaultBooleanValue, defRes: Int = -1): Boolean {
+        return getBoolean(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a boolean value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getBoolean(key: String, default: Boolean = defaultBooleanValue, defRes: Int = -1): Boolean {
-        return getBooleanOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getBoolean(key: String, defValue: Boolean = defaultBooleanValue, defRes: Int = -1): Boolean {
+        return getBooleanOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a boolean value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getBooleanOrNull(keyRes: Int): Boolean? {
         return getBooleanOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a boolean value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getBooleanOrNull(key: String): Boolean? {
         return if (contains(key)) {
             sharedPreferences.getBoolean(key, false)
@@ -90,24 +138,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a byte value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getByte(keyRes: Int, default: Byte = defaultByteValue, defRes: Int = -1): Byte {
-        return getByte(context.getString(keyRes), default, defRes)
+    fun getByte(keyRes: Int, defValue: Byte = defaultByteValue, defRes: Int = -1): Byte {
+        return getByte(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a byte value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getByte(key: String, default: Byte = defaultByteValue, defRes: Int = -1): Byte {
-        return getByteOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getByte(key: String, defValue: Byte = defaultByteValue, defRes: Int = -1): Byte {
+        return getByteOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a byte value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getByteOrNull(keyRes: Int): Byte? {
         return getByteOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a byte value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getByteOrNull(key: String): Byte? {
         return if (contains(key)) {
             sharedPreferences.getInt(key, 0).toByte()
@@ -118,24 +190,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a short value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getShort(keyRes: Int, default: Short = defaultShortValue, defRes: Int = -1): Short {
-        return getShort(context.getString(keyRes), default, defRes)
+    fun getShort(keyRes: Int, defValue: Short = defaultShortValue, defRes: Int = -1): Short {
+        return getShort(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a short value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getShort(key: String, default: Short = defaultShortValue, defRes: Int = -1): Short {
-        return getShortOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getShort(key: String, defValue: Short = defaultShortValue, defRes: Int = -1): Short {
+        return getShortOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a short value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getShortOrNull(keyRes: Int): Short? {
         return getShortOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a short value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getShortOrNull(key: String): Short? {
         return if (contains(key)) {
             sharedPreferences.getInt(key, 0).toShort()
@@ -146,24 +242,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a int value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getInt(keyRes: Int, default: Int = defaultIntValue, defRes: Int = -1): Int {
-        return getInt(context.getString(keyRes), default, defRes)
+    fun getInt(keyRes: Int, defValue: Int = defaultIntValue, defRes: Int = -1): Int {
+        return getInt(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a int value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getInt(key: String, default: Int = defaultIntValue, defRes: Int = -1): Int {
-        return getIntOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getInt(key: String, defValue: Int = defaultIntValue, defRes: Int = -1): Int {
+        return getIntOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a int value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getIntOrNull(keyRes: Int): Int? {
         return getIntOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a int value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getIntOrNull(key: String): Int? {
         return if (contains(key)) {
             sharedPreferences.getInt(key, 0)
@@ -174,24 +294,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a long value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getLong(keyRes: Int, default: Long = defaultLongValue, defRes: Int = -1): Long {
-        return getLong(context.getString(keyRes), default, defRes)
+    fun getLong(keyRes: Int, defValue: Long = defaultLongValue, defRes: Int = -1): Long {
+        return getLong(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a long value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getLong(key: String, default: Long = defaultLongValue, defRes: Int = -1): Long {
-        return getLongOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getLong(key: String, defValue: Long = defaultLongValue, defRes: Int = -1): Long {
+        return getLongOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a long value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getLongOrNull(keyRes: Int): Long? {
         return getLongOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a long value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getLongOrNull(key: String): Long? {
         return if (contains(key)) {
             sharedPreferences.getLong(key, 0)
@@ -202,24 +346,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a float value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getFloat(keyRes: Int, default: Float = defaultFloatValue, defRes: Int = -1): Float {
-        return getFloat(context.getString(keyRes), default, defRes)
+    fun getFloat(keyRes: Int, defValue: Float = defaultFloatValue, defRes: Int = -1): Float {
+        return getFloat(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a float value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getFloat(key: String, default: Float = defaultFloatValue, defRes: Int = -1): Float {
-        return getFloatOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getFloat(key: String, defValue: Float = defaultFloatValue, defRes: Int = -1): Float {
+        return getFloatOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a float value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getFloatOrNull(keyRes: Int): Float? {
         return getFloatOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a float value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getFloatOrNull(key: String): Float? {
         return if (contains(key)) {
             sharedPreferences.getFloat(key, 0F)
@@ -230,24 +398,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a double value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getDouble(keyRes: Int, default: Double = defaultDoubleValue, defRes: Int = -1): Double {
-        return getDouble(context.getString(keyRes), default, defRes)
+    fun getDouble(keyRes: Int, defValue: Double = defaultDoubleValue, defRes: Int = -1): Double {
+        return getDouble(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a double value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getDouble(key: String, default: Double = defaultDoubleValue, defRes: Int = -1): Double {
-        return getDoubleOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getDouble(key: String, defValue: Double = defaultDoubleValue, defRes: Int = -1): Double {
+        return getDoubleOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a double value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getDoubleOrNull(keyRes: Int): Double? {
         return getDoubleOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a double value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getDoubleOrNull(key: String): Double? {
         return if (contains(key)) {
             val v = sharedPreferences.getLong(key, 0)
@@ -259,24 +451,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a BigInteger value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getBigInteger(keyRes: Int, default: BigInteger = defaultBigIntegerValue, defRes: Int = -1): BigInteger {
-        return getBigInteger(context.getString(keyRes), default, defRes)
+    fun getBigInteger(keyRes: Int, defValue: BigInteger = defaultBigIntegerValue, defRes: Int = -1): BigInteger {
+        return getBigInteger(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a BitInteger value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getBigInteger(key: String, default: BigInteger = defaultBigIntegerValue, defRes: Int = -1): BigInteger {
-        return getBigIntegerOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getBigInteger(key: String, defValue: BigInteger = defaultBigIntegerValue, defRes: Int = -1): BigInteger {
+        return getBigIntegerOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a BitInteger value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getBigIntegerOrNull(keyRes: Int): BigInteger? {
         return getBigIntegerOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a BitInteger value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getBigIntegerOrNull(key: String): BigInteger? {
         val v = getStringOrNull(key)
         return if (v != null) {
@@ -288,24 +504,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a BigDecimal value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getBigDecimal(keyRes: Int, default: BigDecimal = defaultBigDecimalValue, defRes: Int = -1): BigDecimal {
-        return getBigDecimal(context.getString(keyRes), default, defRes)
+    fun getBigDecimal(keyRes: Int, defValue: BigDecimal = defaultBigDecimalValue, defRes: Int = -1): BigDecimal {
+        return getBigDecimal(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a BigDecimal value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getBigDecimal(key: String, default: BigDecimal = defaultBigDecimalValue, defRes: Int = -1): BigDecimal {
-        return getBigDecimalOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getBigDecimal(key: String, defValue: BigDecimal = defaultBigDecimalValue, defRes: Int = -1): BigDecimal {
+        return getBigDecimalOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a BigDecimal value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getBigDecimalOrNull(keyRes: Int): BigDecimal? {
         return getBigDecimalOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a BigDecimal value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getBigDecimalOrNull(key: String): BigDecimal? {
         val v = getStringOrNull(key)
         return if (v != null) {
@@ -317,24 +557,48 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Char value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getChar(keyRes: Int, default: Char = defaultCharValue, defRes: Int = -1): Char {
-        return getChar(context.getString(keyRes), default, defRes)
+    fun getChar(keyRes: Int, defValue: Char = defaultCharValue, defRes: Int = -1): Char {
+        return getChar(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Char value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getChar(key: String, default: Char = defaultCharValue, defRes: Int = -1): Char {
-        return getCharOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getChar(key: String, defValue: Char = defaultCharValue, defRes: Int = -1): Char {
+        return getCharOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Char value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getCharOrNull(keyRes: Int): Char? {
         return getCharOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Char value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getCharOrNull(key: String): Char? {
         val v = sharedPreferences.getString(key, null)
         return if (!v.isNullOrEmpty()) {
@@ -346,70 +610,140 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a String value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getString(keyRes: Int, default: String = defaultStringValue, defRes: Int = -1): String {
-        return getString(context.getString(keyRes), default, defRes)
+    fun getString(keyRes: Int, defValue: String = defaultStringValue, defRes: Int = -1): String {
+        return getString(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a String value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getString(key: String, default: String = defaultStringValue, defRes: Int = -1): String {
-        return getStringOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getString(key: String, defValue: String = defaultStringValue, defRes: Int = -1): String {
+        return getStringOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a String value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getStringOrNull(keyRes: Int): String? {
         return getStringOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a String value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getStringOrNull(key: String): String? {
         return sharedPreferences.getString(key, null)
     }
 
 
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a String set value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getStringSet(keyRes: Int, default: Set<String?> = defaultStringSetValue, defRes: Int = -1): Set<String?> {
-        return getStringSet(context.getString(keyRes), default, defRes)
+    fun getStringSet(keyRes: Int, defValue: Set<String?> = defaultStringSetValue, defRes: Int = -1): Set<String?> {
+        return getStringSet(context.getString(keyRes), defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a String set value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist. Ignores if defRes > 0.
+     * @param defRes Resource id to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
     @JvmOverloads
-    fun getStringSet(key: String, default: Set<String?> = defaultStringSetValue, defRes: Int = -1): Set<String?> {
-        return getStringSetOrNull(key) ?: getDefaultValue(default, defRes)
+    fun getStringSet(key: String, defValue: Set<String?> = defaultStringSetValue, defRes: Int = -1): Set<String?> {
+        return getStringSetOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a String set value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getStringSetOrNull(keyRes: Int): Set<String?>? {
         return getStringSetOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a String set value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getStringSetOrNull(key: String): Set<String?>? {
         return sharedPreferences.getStringSet(key, null)
     }
 
 
 
-    /** Get a value from preference.  */
-    fun getBin(keyRes: Int, default: ByteArray = defaultBinValue): ByteArray {
-        return getBin(context.getString(keyRes), default)
+    /**
+     * Retrieve a byte array value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    fun getBin(keyRes: Int, defValue: ByteArray = defaultBinValue): ByteArray {
+        return getBin(context.getString(keyRes), defValue)
     }
 
-    /** Get a value from preference.  */
-    fun getBin(key: String, default: ByteArray = defaultBinValue): ByteArray {
-        return getBinOrNull(key) ?: default
+    /**
+     * Retrieve a byte array value from the preferences.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    fun getBin(key: String, defValue: ByteArray = defaultBinValue): ByteArray {
+        return getBinOrNull(key) ?: defValue
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a byte array value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getBinOrNull(keyRes: Int): ByteArray? {
         return getBinOrNull(context.getString(keyRes))
     }
 
-    /** Get a value from preference.  */
+    /**
+     * Retrieve a byte array value from the preferences.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun getBinOrNull(key: String): ByteArray? {
         val base64Bytes = getStringOrNull(key)
         if (base64Bytes.isNullOrEmpty())
@@ -419,111 +753,233 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Get a value from preference. */
-    inline fun <reified T : Serializable> getSerializable(keyRes: Int, default: T): T {
-        return getSerializable(keyRes, T::class.java, default)
+    /**
+     * Retrieve a Serializable value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    inline fun <reified T : Serializable> getSerializable(keyRes: Int, defValue: T): T {
+        return getSerializable(keyRes, T::class.java, defValue)
     }
 
-    /** Get a value from preference. */
-    inline fun <reified T : Serializable> getSerializable(key: String, default: T): T {
-        return getSerializable(key, T::class.java, default)
+    /**
+     * Retrieve a Serializable value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    inline fun <reified T : Serializable> getSerializable(key: String, defValue: T): T {
+        return getSerializable(key, T::class.java, defValue)
     }
 
-    /** Get a value from preference.  */
-    fun <T : Serializable> getSerializable(keyRes: Int, classOfT: Class<T>, default: T): T {
-        return getSerializable(context.getString(keyRes), classOfT, default)
+    /**
+     * Retrieve a Serializable value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param classOfT The class of T.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    fun <T : Serializable> getSerializable(keyRes: Int, classOfT: Class<T>, defValue: T): T {
+        return getSerializable(context.getString(keyRes), classOfT, defValue)
     }
 
-    /** Get a value from preference.  */
-    fun <T : Serializable> getSerializable(key: String, classOfT: Class<T>, default: T): T {
-        return getSerializableOrNull(key, classOfT) ?: default
+    /**
+     * Retrieve a Serializable value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param classOfT The class of T.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    fun <T : Serializable> getSerializable(key: String, classOfT: Class<T>, defValue: T): T {
+        return getSerializableOrNull(key, classOfT) ?: defValue
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Serializable value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     inline fun <reified T : Serializable> getSerializableOrNull(keyRes: Int): T? {
         return getSerializableOrNull(keyRes, T::class.java)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Serializable value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     inline fun <reified T : Serializable> getSerializableOrNull(key: String): T? {
         return getSerializableOrNull(key, T::class.java)
     }
 
-    /** Get a value from preference.  */
+    /**
+     * Retrieve a Serializable value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param classOfT The class of T.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun <T : Serializable> getSerializableOrNull(keyRes: Int, classOfT: Class<T>): T? {
         return getSerializableOrNull(context.getString(keyRes), classOfT)
     }
 
-    /** Get a value from preference.  */
+    /**
+     * Retrieve a Serializable value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param classOfT The class of T.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun <T : Serializable> getSerializableOrNull(key: String, classOfT: Class<T>): T? {
         val value = getBinOrNull(key)
         if (value == null || value.isEmpty()) {
             return null
         }
         ObjectInputStream(ByteArrayInputStream(value)).use {
-            return it.readObject() as T?
+            return classOfT.cast(it.readObject())
         }
     }
 
 
 
-    /** Get a value from preference. */
-    inline fun <reified T> getObject(keyRes: Int, default: T): T {
-        return getObject(keyRes, T::class.java, default)
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    inline fun <reified T> getObject(keyRes: Int, defValue: T): T {
+        return getObject(keyRes, T::class.java, defValue)
     }
 
-    /** Get a value from preference. */
-    inline fun <reified T> getObject(key: String, default: T): T {
-        return getObject(key, T::class.java, default)
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    inline fun <reified T> getObject(key: String, defValue: T): T {
+        return getObject(key, T::class.java, defValue)
     }
 
-    /** Get a value from preference. */
-    fun <T> getObject(keyRes: Int, classOfT: Class<T>, default: T): T {
-        return getObject(context.getString(keyRes), classOfT, default)
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param classOfT The class of T.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    fun <T> getObject(keyRes: Int, classOfT: Class<T>, defValue: T): T {
+        return getObject(context.getString(keyRes), classOfT, defValue)
     }
 
-    /** Get a value from preference.  */
-    fun <T> getObject(key: String, classOfT: Class<T>, default: T): T {
-        return getObjectOrNull(key, classOfT) ?: default
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param classOfT The class of T.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    fun <T> getObject(key: String, classOfT: Class<T>, defValue: T): T {
+        return getObjectOrNull(key, classOfT) ?: defValue
     }
 
-    /** Get a value from preference. */
-    fun <T> getObject(keyRes: Int, typeOfT: Type, default: T): T {
-        return getObject(context.getString(keyRes), typeOfT, default)
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param typeOfT The type of T.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    fun <T> getObject(keyRes: Int, typeOfT: Type, defValue: T): T {
+        return getObject(context.getString(keyRes), typeOfT, defValue)
     }
 
-    /** Get a value from preference.  */
-    fun <T> getObject(key: String, typeOfT: Type, default: T): T {
-        return getObjectOrNull(key, typeOfT) ?: default
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param typeOfT The type of T.
+     * @param defValue Value to return if this preference does not exist.
+     * @return Returns the preference value if it exists, or default value.
+     * @throws ClassCastException
+     */
+    fun <T> getObject(key: String, typeOfT: Type, defValue: T): T {
+        return getObjectOrNull(key, typeOfT) ?: defValue
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     inline fun <reified T> getObjectOrNull(keyRes: Int): T? {
         return getObjectOrNull(keyRes, T::class.java)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     inline fun <reified T> getObjectOrNull(key: String): T? {
         return getObjectOrNull(key, T::class.java)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param classOfT The class of T.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun <T> getObjectOrNull(keyRes: Int, classOfT: Class<T>): T? {
         return getObjectOrNull(context.getString(keyRes), classOfT)
     }
 
-    /** Get a value from preference.  */
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param classOfT The class of T.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun <T> getObjectOrNull(key: String, classOfT: Class<T>): T? {
         val json = sharedPreferences.getString(key, null)
         return gson.fromJson(json, classOfT)
     }
 
-    /** Get a value from preference. */
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param typeOfT The type of T.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun <T> getObjectOrNull(keyRes: Int, typeOfT: Type): T? {
         return getObjectOrNull(context.getString(keyRes), typeOfT)
     }
 
-    /** Get a value from preference.  */
+    /**
+     * Retrieve a Object value from the preferences. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param typeOfT The type of T.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
     fun <T> getObjectOrNull(key: String, typeOfT: Type): T? {
         val json = sharedPreferences.getString(key, null)
         return gson.fromJson(json, typeOfT)
@@ -533,12 +989,22 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     // Put
 
-    /** Set a value to preference. */
+    /**
+     * Set a boolean value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putBoolean(keyRes: Int, value: Boolean?): Prefs {
         return putBoolean(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a boolean value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putBoolean(key: String, value: Boolean?): Prefs {
         if (value == null) {
             remove(key)
@@ -551,36 +1017,66 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a byte value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putByte(keyRes: Int, value: Byte?): Prefs {
         return putByte(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a byte value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putByte(key: String, value: Byte?): Prefs {
         return putInt(key, value?.toInt())
     }
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a short value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putShort(keyRes: Int, value: Short?): Prefs {
         return putShort(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a short value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putShort(key: String, value: Short?): Prefs {
         return putInt(key, value?.toInt())
     }
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a int value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putInt(keyRes: Int, value: Int?): Prefs {
         return putInt(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a int value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putInt(key: String, value: Int?): Prefs {
         if (value == null) {
             remove(key)
@@ -593,12 +1089,22 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a long value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putLong(keyRes: Int, value: Long?): Prefs {
         return putLong(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a long value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putLong(key: String, value: Long?): Prefs {
         if (value == null) {
             remove(key)
@@ -611,12 +1117,22 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a float value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putFloat(keyRes: Int, value: Float?): Prefs {
         return putFloat(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a float value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putFloat(key: String, value: Float?): Prefs {
         if (value == null) {
             remove(key)
@@ -629,12 +1145,22 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a double value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putDouble(keyRes: Int, value: Double?): Prefs {
         return putDouble(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a double value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putDouble(key: String, value: Double?): Prefs {
         if (value == null) {
             remove(key)
@@ -647,36 +1173,66 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a BigInteger value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putBigInteger(keyRes: Int, value: BigInteger?): Prefs {
         return putBigInteger(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a BigInteger value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putBigInteger(key: String, value: BigInteger?): Prefs {
         return putString(key, value?.toString())
     }
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a BigDecimal value to the preferences. This does not guarantee digit accuracy of the saved value.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putBigDecimal(keyRes: Int, value: BigDecimal?): Prefs {
         return putBigDecimal(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a BigDecimal value to the preferences. This does not guarantee digit accuracy of the saved value.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putBigDecimal(key: String, value: BigDecimal?): Prefs {
         return putString(key, value?.toPlainString())
     }
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a char value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putChar(keyRes: Int, value: Char?): Prefs {
         return putChar(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a char value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putChar(key: String, value: Char?): Prefs {
         editor.putString(key, value.toString())
         if (!beforeApply) end()
@@ -685,12 +1241,22 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a String value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putString(keyRes: Int, value: CharSequence?): Prefs {
         return putString(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a String value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putString(key: String, value: CharSequence?): Prefs {
         editor.putString(key, value?.toString())
         if (!beforeApply) end()
@@ -699,12 +1265,22 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a String set value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putStringSet(keyRes: Int, value: Set<String?>?): Prefs {
         return putStringSet(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a String set value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putStringSet(key: String, value: Set<String?>?): Prefs {
         editor.putStringSet(key, value)
         if (!beforeApply) end()
@@ -713,12 +1289,22 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a byte array value to the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putBin(keyRes: Int, value: ByteArray?): Prefs {
         return putBin(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a byte array value to the preferences.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putBin(key: String, value: ByteArray?): Prefs {
         if (value == null) {
             editor.putString(key, null)
@@ -732,15 +1318,25 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a Serializable value to the preferences.. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putSerializable(keyRes: Int, value: Serializable?): Prefs {
         return putSerializable(context.getString(keyRes), value)
     }
 
-    /** Get a value from preference.  */
+    /**
+     * Set a Serializable value to the preferences.. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putSerializable(key: String, value: Serializable?): Prefs {
         if (value == null) {
-            editor.putString(key, null)
+            putBin(key, null)
         } else {
             ByteArrayOutputStream().use {
                 ObjectOutputStream(it).use {
@@ -755,12 +1351,22 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
 
 
-    /** Set a value to preference. */
+    /**
+     * Set a Object value to the preferences.. Keep the class when using Proguard.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putObject(keyRes: Int, value: Any?): Prefs {
         return putObject(context.getString(keyRes), value)
     }
 
-    /** Set a value to preference. */
+    /**
+     * Set a Object value to the preferences.. Keep the class when using Proguard.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
     fun putObject(key: String, value: Any?): Prefs {
         if (value == null) {
             editor.putString(key, null)
@@ -776,12 +1382,21 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     // Remove
 
-    /** Remove preference value. */
-    fun remove(keyRes : Int) : Prefs {
+    /**
+     * Remov ae value from the preferences.
+     * @param keyRes The string resource id of the preference name.
+     * @return A reference to this object.
+     */
+    fun remove(keyRes: Int): Prefs {
         return remove(context.getString(keyRes))
     }
-    /** Remove preference value. */
-    fun remove(key : String) : Prefs {
+
+    /**
+     * Remove a value from the preferences.
+     * @param key TThe preference name.
+     * @return A reference to this object.
+     */
+    fun remove(key: String): Prefs {
         editor.remove(key)
         if (!beforeApply) end()
         return this
@@ -790,36 +1405,36 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
 
     // Begin / End
 
-    /** Begin putting. */
-    fun begin() : Prefs {
+    /**
+     * Begin setting values until calling end method.
+     */
+    fun begin(): Prefs {
         end()
         beforeApply = true
         return this
     }
 
-    /** Apply put values. */
-    fun end() : Unit {
+    /**
+     * Write set values from  calling begin method.
+     */
+    fun end() {
         editor.apply()
         beforeApply = false
     }
 
 
-    // All
 
-    /** Get all values. */
-    fun all() : Map<String, *> {
-        return sharedPreferences.all
-    }
-
-
+    // Default value
 
     /**
-     * Get resource value.
-     * @param defRes A resource ID. (bool, integer, dimen, string)
+     * Retrieve a default value.
+     * @param defValue A default value. Ignores if defRes > 0.
+     * @param defRes A resource id of default value. (type: bool, integer, dimen, string, array-string)
+     * @return A default value from defValue or resource.
      */
-    private inline fun<reified T> getDefaultValue(default : T, defRes : Int) : T {
+    private inline fun<reified T> getDefaultValue(defValue : T, defRes : Int) : T {
         if (defRes <= 0)
-            return default
+            return defValue
 
         val outputClass = T::class
 
