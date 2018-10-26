@@ -3,6 +3,7 @@ package com.wa2c.android.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.support.annotation.*
 import android.util.Base64
 import android.util.TypedValue
 import com.google.gson.Gson
@@ -29,6 +30,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     /** SharedPreferences.Editor */
     private val editor = sharedPreferences.edit()
     /** Gson. */
+    //private val gson : Gson by lazy { Gson() }
     private val gson : Gson by lazy { Gson() }
 
     /** The default boolean value. */
@@ -69,7 +71,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param keyRes The string resource id of the preference name.
      * @return Returns true if the preference exists in the preferences, otherwise false.
      */
-    fun contains(keyRes : Int) : Boolean {
+    fun contains(@StringRes keyRes: Int) : Boolean {
         return contains(context.getString(keyRes))
     }
 
@@ -95,7 +97,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getBoolean(keyRes: Int, defValue: Boolean = defaultBooleanValue, defRes: Int = -1): Boolean {
+    fun getBoolean(@StringRes keyRes: Int, defValue: Boolean = defaultBooleanValue, @AnyRes defRes: Int = -1): Boolean {
         return getBoolean(context.getString(keyRes), defValue, defRes)
     }
 
@@ -108,7 +110,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getBoolean(key: String, defValue: Boolean = defaultBooleanValue, defRes: Int = -1): Boolean {
+    fun getBoolean(key: String, defValue: Boolean = defaultBooleanValue, @AnyRes defRes: Int = -1): Boolean {
         return getBooleanOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -118,7 +120,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getBooleanOrNull(keyRes: Int): Boolean? {
+    fun getBooleanOrNull(@StringRes keyRes: Int): Boolean? {
         return getBooleanOrNull(context.getString(keyRes))
     }
 
@@ -147,7 +149,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getByte(keyRes: Int, defValue: Byte = defaultByteValue, defRes: Int = -1): Byte {
+    fun getByte(@StringRes keyRes: Int, defValue: Byte = defaultByteValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Byte {
         return getByte(context.getString(keyRes), defValue, defRes)
     }
 
@@ -160,7 +162,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getByte(key: String, defValue: Byte = defaultByteValue, defRes: Int = -1): Byte {
+    fun getByte(key: String, defValue: Byte = defaultByteValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Byte {
         return getByteOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -170,7 +172,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getByteOrNull(keyRes: Int): Byte? {
+    fun getByteOrNull(@StringRes keyRes: Int): Byte? {
         return getByteOrNull(context.getString(keyRes))
     }
 
@@ -199,7 +201,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getShort(keyRes: Int, defValue: Short = defaultShortValue, defRes: Int = -1): Short {
+    fun getShort(@StringRes keyRes: Int, defValue: Short = defaultShortValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Short {
         return getShort(context.getString(keyRes), defValue, defRes)
     }
 
@@ -212,7 +214,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getShort(key: String, defValue: Short = defaultShortValue, defRes: Int = -1): Short {
+    fun getShort(key: String, defValue: Short = defaultShortValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Short {
         return getShortOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -222,7 +224,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getShortOrNull(keyRes: Int): Short? {
+    fun getShortOrNull(@StringRes keyRes: Int): Short? {
         return getShortOrNull(context.getString(keyRes))
     }
 
@@ -251,7 +253,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getInt(keyRes: Int, defValue: Int = defaultIntValue, defRes: Int = -1): Int {
+    fun getInt(@StringRes keyRes: Int, defValue: Int = defaultIntValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Int {
         return getInt(context.getString(keyRes), defValue, defRes)
     }
 
@@ -264,7 +266,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getInt(key: String, defValue: Int = defaultIntValue, defRes: Int = -1): Int {
+    fun getInt(key: String, defValue: Int = defaultIntValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Int {
         return getIntOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -274,7 +276,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getIntOrNull(keyRes: Int): Int? {
+    fun getIntOrNull(@StringRes keyRes: Int): Int? {
         return getIntOrNull(context.getString(keyRes))
     }
 
@@ -303,7 +305,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getLong(keyRes: Int, defValue: Long = defaultLongValue, defRes: Int = -1): Long {
+    fun getLong(@StringRes keyRes: Int, defValue: Long = defaultLongValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Long {
         return getLong(context.getString(keyRes), defValue, defRes)
     }
 
@@ -316,7 +318,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getLong(key: String, defValue: Long = defaultLongValue, defRes: Int = -1): Long {
+    fun getLong(key: String, defValue: Long = defaultLongValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Long {
         return getLongOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -326,7 +328,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getLongOrNull(keyRes: Int): Long? {
+    fun getLongOrNull(@StringRes keyRes: Int): Long? {
         return getLongOrNull(context.getString(keyRes))
     }
 
@@ -355,7 +357,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getFloat(keyRes: Int, defValue: Float = defaultFloatValue, defRes: Int = -1): Float {
+    fun getFloat(@StringRes keyRes: Int, defValue: Float = defaultFloatValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Float {
         return getFloat(context.getString(keyRes), defValue, defRes)
     }
 
@@ -368,7 +370,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getFloat(key: String, defValue: Float = defaultFloatValue, defRes: Int = -1): Float {
+    fun getFloat(@StringRes key: String, defValue: Float = defaultFloatValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Float {
         return getFloatOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -378,7 +380,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getFloatOrNull(keyRes: Int): Float? {
+    fun getFloatOrNull(@StringRes keyRes: Int): Float? {
         return getFloatOrNull(context.getString(keyRes))
     }
 
@@ -407,7 +409,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getDouble(keyRes: Int, defValue: Double = defaultDoubleValue, defRes: Int = -1): Double {
+    fun getDouble(keyRes: Int, defValue: Double = defaultDoubleValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Double {
         return getDouble(context.getString(keyRes), defValue, defRes)
     }
 
@@ -420,7 +422,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getDouble(key: String, defValue: Double = defaultDoubleValue, defRes: Int = -1): Double {
+    fun getDouble(key: String, defValue: Double = defaultDoubleValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Double {
         return getDoubleOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -430,7 +432,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getDoubleOrNull(keyRes: Int): Double? {
+    fun getDoubleOrNull(@StringRes keyRes: Int): Double? {
         return getDoubleOrNull(context.getString(keyRes))
     }
 
@@ -460,7 +462,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getBigInteger(keyRes: Int, defValue: BigInteger = defaultBigIntegerValue, defRes: Int = -1): BigInteger {
+    fun getBigInteger(@StringRes keyRes: Int, defValue: BigInteger = defaultBigIntegerValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): BigInteger {
         return getBigInteger(context.getString(keyRes), defValue, defRes)
     }
 
@@ -473,7 +475,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getBigInteger(key: String, defValue: BigInteger = defaultBigIntegerValue, defRes: Int = -1): BigInteger {
+    fun getBigInteger(key: String, defValue: BigInteger = defaultBigIntegerValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): BigInteger {
         return getBigIntegerOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -483,7 +485,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getBigIntegerOrNull(keyRes: Int): BigInteger? {
+    fun getBigIntegerOrNull(@StringRes keyRes: Int): BigInteger? {
         return getBigIntegerOrNull(context.getString(keyRes))
     }
 
@@ -513,7 +515,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getBigDecimal(keyRes: Int, defValue: BigDecimal = defaultBigDecimalValue, defRes: Int = -1): BigDecimal {
+    fun getBigDecimal(@StringRes keyRes: Int, defValue: BigDecimal = defaultBigDecimalValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): BigDecimal {
         return getBigDecimal(context.getString(keyRes), defValue, defRes)
     }
 
@@ -526,7 +528,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getBigDecimal(key: String, defValue: BigDecimal = defaultBigDecimalValue, defRes: Int = -1): BigDecimal {
+    fun getBigDecimal(key: String, defValue: BigDecimal = defaultBigDecimalValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): BigDecimal {
         return getBigDecimalOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -536,7 +538,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getBigDecimalOrNull(keyRes: Int): BigDecimal? {
+    fun getBigDecimalOrNull(@StringRes keyRes: Int): BigDecimal? {
         return getBigDecimalOrNull(context.getString(keyRes))
     }
 
@@ -566,7 +568,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getChar(keyRes: Int, defValue: Char = defaultCharValue, defRes: Int = -1): Char {
+    fun getChar(@StringRes keyRes: Int, defValue: Char = defaultCharValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Char {
         return getChar(context.getString(keyRes), defValue, defRes)
     }
 
@@ -579,7 +581,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getChar(key: String, defValue: Char = defaultCharValue, defRes: Int = -1): Char {
+    fun getChar(key: String, defValue: Char = defaultCharValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): Char {
         return getCharOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -589,7 +591,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getCharOrNull(keyRes: Int): Char? {
+    fun getCharOrNull(@StringRes keyRes: Int): Char? {
         return getCharOrNull(context.getString(keyRes))
     }
 
@@ -619,7 +621,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getString(keyRes: Int, defValue: String = defaultStringValue, defRes: Int = -1): String {
+    fun getString(@StringRes keyRes: Int, defValue: String = defaultStringValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): String {
         return getString(context.getString(keyRes), defValue, defRes)
     }
 
@@ -632,7 +634,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getString(key: String, defValue: String = defaultStringValue, defRes: Int = -1): String {
+    fun getString(key: String, defValue: String = defaultStringValue, @IntegerRes @DimenRes @StringRes defRes: Int = -1): String {
         return getStringOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -642,7 +644,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getStringOrNull(keyRes: Int): String? {
+    fun getStringOrNull(@StringRes keyRes: Int): String? {
         return getStringOrNull(context.getString(keyRes))
     }
 
@@ -667,7 +669,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getStringSet(keyRes: Int, defValue: Set<String?> = defaultStringSetValue, defRes: Int = -1): Set<String?> {
+    fun getStringSet(@StringRes keyRes: Int, defValue: Set<String?> = defaultStringSetValue, @ArrayRes defRes: Int = -1): Set<String?> {
         return getStringSet(context.getString(keyRes), defValue, defRes)
     }
 
@@ -680,7 +682,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getStringSet(key: String, defValue: Set<String?> = defaultStringSetValue, defRes: Int = -1): Set<String?> {
+    fun getStringSet(key: String, defValue: Set<String?> = defaultStringSetValue, @ArrayRes defRes: Int = -1): Set<String?> {
         return getStringSetOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
@@ -690,7 +692,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getStringSetOrNull(keyRes: Int): Set<String?>? {
+    fun getStringSetOrNull(@StringRes keyRes: Int): Set<String?>? {
         return getStringSetOrNull(context.getString(keyRes))
     }
 
@@ -713,7 +715,8 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or default value.
      * @throws ClassCastException
      */
-    fun getBin(keyRes: Int, defValue: ByteArray = defaultBinValue): ByteArray {
+    @JvmOverloads
+    fun getBin(@StringRes keyRes: Int, defValue: ByteArray = defaultBinValue): ByteArray {
         return getBin(context.getString(keyRes), defValue)
     }
 
@@ -724,6 +727,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or default value.
      * @throws ClassCastException
      */
+    @JvmOverloads
     fun getBin(key: String, defValue: ByteArray = defaultBinValue): ByteArray {
         return getBinOrNull(key) ?: defValue
     }
@@ -734,7 +738,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun getBinOrNull(keyRes: Int): ByteArray? {
+    fun getBinOrNull(@StringRes keyRes: Int): ByteArray? {
         return getBinOrNull(context.getString(keyRes))
     }
 
@@ -760,7 +764,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or default value.
      * @throws ClassCastException
      */
-    inline fun <reified T : Serializable> getSerializable(keyRes: Int, defValue: T): T {
+    inline fun <reified T : Serializable> getSerializable(@StringRes keyRes: Int, defValue: T): T {
         return getSerializable(keyRes, T::class.java, defValue)
     }
 
@@ -783,7 +787,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or default value.
      * @throws ClassCastException
      */
-    fun <T : Serializable> getSerializable(keyRes: Int, classOfT: Class<T>, defValue: T): T {
+    fun <T : Serializable> getSerializable(@StringRes keyRes: Int, classOfT: Class<T>, defValue: T): T {
         return getSerializable(context.getString(keyRes), classOfT, defValue)
     }
 
@@ -805,7 +809,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    inline fun <reified T : Serializable> getSerializableOrNull(keyRes: Int): T? {
+    inline fun <reified T : Serializable> getSerializableOrNull(@StringRes keyRes: Int): T? {
         return getSerializableOrNull(keyRes, T::class.java)
     }
 
@@ -826,7 +830,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun <T : Serializable> getSerializableOrNull(keyRes: Int, classOfT: Class<T>): T? {
+    fun <T : Serializable> getSerializableOrNull(@StringRes keyRes: Int, classOfT: Class<T>): T? {
         return getSerializableOrNull(context.getString(keyRes), classOfT)
     }
 
@@ -856,7 +860,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or default value.
      * @throws ClassCastException
      */
-    inline fun <reified T> getObject(keyRes: Int, defValue: T): T {
+    inline fun <reified T> getObject(@StringRes keyRes: Int, defValue: T): T {
         return getObject(keyRes, T::class.java, defValue)
     }
 
@@ -879,7 +883,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or default value.
      * @throws ClassCastException
      */
-    fun <T> getObject(keyRes: Int, classOfT: Class<T>, defValue: T): T {
+    fun <T> getObject(@StringRes keyRes: Int, classOfT: Class<T>, defValue: T): T {
         return getObject(context.getString(keyRes), classOfT, defValue)
     }
 
@@ -903,7 +907,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or default value.
      * @throws ClassCastException
      */
-    fun <T> getObject(keyRes: Int, typeOfT: Type, defValue: T): T {
+    fun <T> getObject(@StringRes keyRes: Int, typeOfT: Type, defValue: T): T {
         return getObject(context.getString(keyRes), typeOfT, defValue)
     }
 
@@ -925,7 +929,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    inline fun <reified T> getObjectOrNull(keyRes: Int): T? {
+    inline fun <reified T> getObjectOrNull(@StringRes keyRes: Int): T? {
         return getObjectOrNull(keyRes, T::class.java)
     }
 
@@ -946,7 +950,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun <T> getObjectOrNull(keyRes: Int, classOfT: Class<T>): T? {
+    fun <T> getObjectOrNull(@StringRes keyRes: Int, classOfT: Class<T>): T? {
         return getObjectOrNull(context.getString(keyRes), classOfT)
     }
 
@@ -969,7 +973,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @return Returns the preference value if it exists, or null.
      * @throws ClassCastException
      */
-    fun <T> getObjectOrNull(keyRes: Int, typeOfT: Type): T? {
+    fun <T> getObjectOrNull(@StringRes keyRes: Int, typeOfT: Type): T? {
         return getObjectOrNull(context.getString(keyRes), typeOfT)
     }
 
@@ -995,7 +999,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putBoolean(keyRes: Int, value: Boolean?): Prefs {
+    fun putBoolean(@StringRes keyRes: Int, value: Boolean?): Prefs {
         return putBoolean(context.getString(keyRes), value)
     }
 
@@ -1023,7 +1027,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putByte(keyRes: Int, value: Byte?): Prefs {
+    fun putByte(@StringRes keyRes: Int, value: Byte?): Prefs {
         return putByte(context.getString(keyRes), value)
     }
 
@@ -1045,7 +1049,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putShort(keyRes: Int, value: Short?): Prefs {
+    fun putShort(@StringRes keyRes: Int, value: Short?): Prefs {
         return putShort(context.getString(keyRes), value)
     }
 
@@ -1067,7 +1071,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putInt(keyRes: Int, value: Int?): Prefs {
+    fun putInt(@StringRes keyRes: Int, value: Int?): Prefs {
         return putInt(context.getString(keyRes), value)
     }
 
@@ -1095,7 +1099,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putLong(keyRes: Int, value: Long?): Prefs {
+    fun putLong(@StringRes keyRes: Int, value: Long?): Prefs {
         return putLong(context.getString(keyRes), value)
     }
 
@@ -1123,7 +1127,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putFloat(keyRes: Int, value: Float?): Prefs {
+    fun putFloat(@StringRes keyRes: Int, value: Float?): Prefs {
         return putFloat(context.getString(keyRes), value)
     }
 
@@ -1151,7 +1155,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putDouble(keyRes: Int, value: Double?): Prefs {
+    fun putDouble(@StringRes keyRes: Int, value: Double?): Prefs {
         return putDouble(context.getString(keyRes), value)
     }
 
@@ -1179,7 +1183,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putBigInteger(keyRes: Int, value: BigInteger?): Prefs {
+    fun putBigInteger(@StringRes keyRes: Int, value: BigInteger?): Prefs {
         return putBigInteger(context.getString(keyRes), value)
     }
 
@@ -1201,7 +1205,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putBigDecimal(keyRes: Int, value: BigDecimal?): Prefs {
+    fun putBigDecimal(@StringRes keyRes: Int, value: BigDecimal?): Prefs {
         return putBigDecimal(context.getString(keyRes), value)
     }
 
@@ -1223,7 +1227,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putChar(keyRes: Int, value: Char?): Prefs {
+    fun putChar(@StringRes keyRes: Int, value: Char?): Prefs {
         return putChar(context.getString(keyRes), value)
     }
 
@@ -1247,7 +1251,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putString(keyRes: Int, value: CharSequence?): Prefs {
+    fun putString(@StringRes keyRes: Int, value: CharSequence?): Prefs {
         return putString(context.getString(keyRes), value)
     }
 
@@ -1271,7 +1275,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putStringSet(keyRes: Int, value: Set<String?>?): Prefs {
+    fun putStringSet(@StringRes keyRes: Int, value: Set<String?>?): Prefs {
         return putStringSet(context.getString(keyRes), value)
     }
 
@@ -1295,7 +1299,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putBin(keyRes: Int, value: ByteArray?): Prefs {
+    fun putBin(@StringRes keyRes: Int, value: ByteArray?): Prefs {
         return putBin(context.getString(keyRes), value)
     }
 
@@ -1324,7 +1328,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putSerializable(keyRes: Int, value: Serializable?): Prefs {
+    fun putSerializable(@StringRes keyRes: Int, value: Serializable?): Prefs {
         return putSerializable(context.getString(keyRes), value)
     }
 
@@ -1357,7 +1361,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
      */
-    fun putObject(keyRes: Int, value: Any?): Prefs {
+    fun putObject(@StringRes keyRes: Int, value: Any?): Prefs {
         return putObject(context.getString(keyRes), value)
     }
 
@@ -1387,7 +1391,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param keyRes The string resource id of the preference name.
      * @return A reference to this object.
      */
-    fun remove(keyRes: Int): Prefs {
+    fun remove(@StringRes keyRes: Int): Prefs {
         return remove(context.getString(keyRes))
     }
 
@@ -1469,7 +1473,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
                     Long::class -> res.toLong()
                     Float::class -> res.toFloat()
                     Double::class -> res.toDouble()
-                    Char::class -> res.toChar()
+                    Char::class -> res.toString()[0]
                     String::class -> res.toString()
                     BigInteger::class -> res.toBigInteger()
                     BigDecimal::class -> res.toBigDecimal()
@@ -1486,7 +1490,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
                     Long::class -> res.toLong()
                     Float::class -> res
                     Double::class -> res.toDouble()
-                    Char::class -> res.toChar()
+                    Char::class -> res.toString()[0]
                     String::class -> res.toString()
                     BigInteger::class -> BigInteger.valueOf(res.toLong())
                     BigDecimal::class -> res.toBigDecimal()
