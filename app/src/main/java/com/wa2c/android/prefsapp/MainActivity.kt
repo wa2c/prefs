@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-
+                val a = prefs.getInt(R.string.prefkey_int, defRes = R.string.string_value1)
 
             } catch (e: Exception) {
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()

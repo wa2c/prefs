@@ -19,7 +19,7 @@ import java.util.*
  * @param context A context.
  * @param name The preferences file name. Use default shared preferences if null.
  */
-class Prefs @JvmOverloads constructor(private val context: Context, name : String? = null) {
+open class Prefs @JvmOverloads constructor(protected val context: Context, protected val name : String? = null) {
 
     /** SharedPreferences. */
     val sharedPreferences : SharedPreferences = if (name.isNullOrEmpty()) {
@@ -28,10 +28,11 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
         context.getSharedPreferences(name, Context.MODE_PRIVATE)
     }
     /** SharedPreferences.Editor */
-    private val editor = sharedPreferences.edit()
+    protected val editor = sharedPreferences.edit()
     /** Gson. */
-    //private val gson : Gson by lazy { Gson() }
-    private val gson : Gson by lazy { Gson() }
+    protected val gson : Gson by lazy { Gson() }
+    /** True if editing before applying. */
+    protected var beforeApply = false
 
     /** The default boolean value. */
     var defaultBooleanValue : Boolean = false
@@ -59,9 +60,6 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
     var defaultStringSetValue : Set<String> = HashSet(0)
     /** The default byte array value. */
     var defaultBinValue : ByteArray = ByteArray(0)
-
-    /** True if editing before applying. */
-    private var beforeApply = false
 
 
     // Contains
@@ -1436,7 +1434,7 @@ class Prefs @JvmOverloads constructor(private val context: Context, name : Strin
      * @param defRes A resource id of default value. (type: bool, integer, dimen, string, array-string)
      * @return A default value from defValue or resource.
      */
-    private inline fun<reified T> getDefaultValue(defValue : T, defRes : Int) : T {
+    protected inline fun<reified T> getDefaultValue(defValue : T, defRes : Int) : T {
         if (defRes <= 0)
             return defValue
 
