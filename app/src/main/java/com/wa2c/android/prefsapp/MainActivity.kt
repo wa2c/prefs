@@ -1,25 +1,29 @@
 package com.wa2c.android.prefsapp
 
-import android.content.SharedPreferences
-import android.support.v7.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
-import com.wa2c.android.prefs.Prefs
 import kotlinx.android.synthetic.main.activity_main.*
-import java.math.BigInteger
+import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var prefs : Prefs
+    private lateinit var prefs : CustomPrefs
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        prefs = Prefs(this)
+        prefs = CustomPrefs(this)
         initialize()
     }
 
@@ -61,6 +65,15 @@ class MainActivity : AppCompatActivity() {
         stringSaveButton.setOnClickListener(clickListener)
         stringLoadButton.setOnClickListener(clickListener)
 
+        binSaveButton.setOnClickListener(clickListener)
+        binLoadButton.setOnClickListener(clickListener)
+
+        colorSaveButton.setOnClickListener(clickListener)
+        colorLoadButton.setOnClickListener(clickListener)
+
+        dateSaveButton.setOnClickListener(clickListener)
+        dateLoadButton.setOnClickListener(clickListener)
+        dateInputEditText.setText(dateFormat.format(Date()))
     }
 
     private val clickListener = buttonClickListener()
@@ -83,6 +96,9 @@ class MainActivity : AppCompatActivity() {
                             .remove(R.string.prefkey_big_decimal)
                             .remove(R.string.prefkey_char)
                             .remove(R.string.prefkey_string)
+                            .remove(R.string.prefkey_bin)
+                            .remove(R.string.prefkey_color)
+                            .remove(R.string.prefkey_date)
                             .end()
                     }
 
@@ -119,9 +135,24 @@ class MainActivity : AppCompatActivity() {
                     stringSaveButton -> prefs.putString(R.string.prefkey_string, stringInputEditText.text)
                     stringLoadButton -> stringOutputTextView.text = prefs.getString(R.string.prefkey_string)
 
-                }
+                    binSaveButton -> {
+                        val bitmap = (binInputImageView.drawable as BitmapDrawable).bitmap
+                        val baos = ByteArrayOutputStream()
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                        prefs.putBin(R.string.prefkey_bin,  baos.toByteArray())
+                    }
+                    binLoadButton -> {
+                        val byteArray = prefs.getBin(R.string.prefkey_bin, defRes = android.R.mipmap.sym_def_app_icon)
+                        binOutputImageView.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size))
+                    }
 
-                val a = prefs.getInt(R.string.prefkey_int, defRes = R.string.string_value1)
+                    colorSaveButton -> prefs.putColor(R.string.prefkey_color, (colorInputImageView.drawable as ColorDrawable).color)
+                    colorLoadButton -> colorOutputImageView.setImageDrawable(ColorDrawable(prefs.getColor(R.string.prefkey_color, defRes = R.color.color_blue)))
+
+                    dateSaveButton -> prefs.putDate(R.string.prefkey_date, dateFormat.parse(dateInputEditText.text.toString()))
+                    dateLoadButton -> dateOutputTextView.text = dateFormat.format(prefs.getDate(R.string.prefkey_date, defRes = R.string.string_date))
+
+                }
 
             } catch (e: Exception) {
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()

@@ -13,7 +13,7 @@ import java.util.*
 
 class CustomPrefs(context: Context, name: String? = null) : Prefs(context, name) {
 
-    var dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+    var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     /** The default long value. */
     var defaultColorValue: Int = Color.WHITE
@@ -38,7 +38,12 @@ class CustomPrefs(context: Context, name: String? = null) : Prefs(context, name)
         context.resources.getValue(defRes, resourceVal, true)
         return when {
             resourceVal.type == TypedValue.TYPE_STRING -> Color.parseColor(context.getString(defRes))
-            resourceVal.type == TypedValue.TYPE_FIRST_COLOR_INT -> context.resources.getInteger(defRes)
+            resourceVal.type == TypedValue.TYPE_FIRST_COLOR_INT ||
+            resourceVal.type == TypedValue.TYPE_LAST_COLOR_INT ||
+            resourceVal.type == TypedValue.TYPE_INT_COLOR_ARGB4 ||
+            resourceVal.type == TypedValue.TYPE_INT_COLOR_ARGB8 ||
+            resourceVal.type == TypedValue.TYPE_INT_COLOR_RGB4 ||
+            resourceVal.type == TypedValue.TYPE_INT_COLOR_RGB8 -> context.resources.getInteger(defRes)
             resourceVal.type == TypedValue.TYPE_FIRST_INT -> context.resources.getInteger(defRes)
             else -> throw ClassCastException("Invalid resource.")
         }

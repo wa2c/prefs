@@ -17,6 +17,9 @@
     <string name="prefkey_serializable">prefkey_serializable</string>
     <string name="prefkey_object">prefkey_object</string>
 
+    <string name="prefkey_color">prefkey_color</string>
+    <string name="prefkey_date">prefkey_date</string>
+
 
 
     <bool name="bool_value1">true</bool>
@@ -30,6 +33,12 @@
     <item name="string_value2" type="string" format="string">-12</item>
 
     <string name="string_bool">true</string>
+
+    <color name="color_blue">#0000FF</color>
+
+    <string name="string_date">2000-01-01</string>
+
+
 
     <string-array name="array_string_set">
         <item>a</item>
@@ -49,4 +58,5 @@
         <item>b</item>
         <item>c</item>
     </string-array>
+
 </resources>

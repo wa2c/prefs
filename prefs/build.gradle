@@ -5,8 +5,6 @@ apply from: 'maven.gradle'
 android {
     compileSdkVersion 27
 
-
-
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27

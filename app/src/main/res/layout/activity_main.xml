@@ -521,6 +521,128 @@
             </TableRow>
 
 
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="Bin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/binInputImageView"
+                        android:src="@android:drawable/btn_star_big_on"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/binSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/binLoadButton"/>
+
+                <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/binOutputImageView"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="Color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:id="@+id/colorInputImageView"
+                        android:src="@android:color/holo_red_dark"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/colorSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/colorLoadButton"/>
+
+                <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:id="@+id/colorOutputImageView" />
+            </TableRow>
+
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:layout_span="4"
+                        android:text="Date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="datetime"
+                        android:ems="10"
+                        android:id="@+id/dateInputEditText"/>
+
+                <Button
+                        android:text="@string/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/dateSaveButton"/>
+
+                <Button
+                        android:text="@string/load"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/dateLoadButton"/>
+
+                <TextView
+                        android:layout_weight="1"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/dateOutputTextView"/>
+            </TableRow>
+
         </TableLayout>
 
     </ScrollView>

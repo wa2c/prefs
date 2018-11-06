@@ -710,24 +710,26 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
      * Retrieve a byte array value from the preferences.
      * @param keyRes The string resource id of the preference name.
      * @param defValue Value to return if this preference does not exist.
+     * @param defRes Resource id to return if this preference does not exist.
      * @return Returns the preference value if it exists, or default value.
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getBin(@StringRes keyRes: Int, defValue: ByteArray = defaultBinValue): ByteArray {
-        return getBin(context.getString(keyRes), defValue)
+    fun getBin(@StringRes keyRes: Int, defValue: ByteArray = defaultBinValue, @AnyRes defRes: Int = -1): ByteArray {
+        return getBin(context.getString(keyRes), defValue, defRes)
     }
 
     /**
      * Retrieve a byte array value from the preferences.
      * @param key The preference name.
      * @param defValue Value to return if this preference does not exist.
+     * @param defRes Resource id to return if this preference does not exist.
      * @return Returns the preference value if it exists, or default value.
      * @throws ClassCastException
      */
     @JvmOverloads
-    fun getBin(key: String, defValue: ByteArray = defaultBinValue): ByteArray {
-        return getBinOrNull(key) ?: defValue
+    fun getBin(key: String, defValue: ByteArray = defaultBinValue, @AnyRes defRes: Int = -1): ByteArray {
+        return getBinOrNull(key) ?: getDefaultValue(defValue, defRes)
     }
 
     /**
@@ -1434,7 +1436,7 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
      * @param defRes A resource id of default value. (type: bool, integer, dimen, string, array-string)
      * @return A default value from defValue or resource.
      */
-    protected inline fun<reified T> getDefaultValue(defValue : T, defRes : Int) : T {
+    private inline fun<reified T> getDefaultValue(defValue : T, defRes : Int) : T {
         if (defRes <= 0)
             return defValue
 
@@ -1467,7 +1469,7 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
                     Boolean::class -> (res != 0)
                     Byte::class -> res.toByte()
                     Short::class -> res.toShort()
-                    Integer::class -> res
+                    Int::class -> res
                     Long::class -> res.toLong()
                     Float::class -> res.toFloat()
                     Double::class -> res.toDouble()
@@ -1484,7 +1486,7 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
                     Boolean::class -> (res != 0.0F)
                     Byte::class -> res.toByte()
                     Short::class -> res.toShort()
-                    Integer::class -> res.toInt()
+                    Int::class -> res.toInt()
                     Long::class -> res.toLong()
                     Float::class -> res
                     Double::class -> res.toDouble()
@@ -1501,7 +1503,7 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
                     Boolean::class -> res.toBoolean()
                     Byte::class -> res.toByte()
                     Short::class -> res.toShort()
-                    Integer::class -> res.toInt()
+                    Int::class -> res.toInt()
                     Long::class -> res.toLong()
                     Float::class -> res.toFloat()
                     Double::class -> res.toDouble()
@@ -1509,6 +1511,7 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
                     String::class -> res
                     BigInteger::class -> res.toBigInteger()
                     BigDecimal::class -> res.toBigDecimal()
+                    ByteArray::class -> context.resources.openRawResource(defRes).readBytes()
                     else -> throw ClassCastException("Invalid resource.")
                 }
                 return value as T
