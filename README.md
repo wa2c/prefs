@@ -1,8 +1,8 @@
 Prefs - SharedPreferences wrapper library
 =========================================
 
-This is a wrapper library for operation SharedPreferences of Android.
-This provides various methods for data input / output to SharedPreferences.
+This is a wrapper library for operating Android SharedPreferences.
+This provides various data input / output methods.
 
 ## Feature
 
@@ -145,21 +145,21 @@ val v2 = prefs.getInt(R.string.pref_v2, defRes = R.integer.v2)
 
 The available resource types different for each data type. They are follows.
 
-| Type          | bool | integer | float | dimen | string | array-string | drawable,raw |
-|:--------------|:----:|:-------:|:-----:|:-----:|:------:|:------------:|:------------:|
-| Boolean       |   *  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Byte          |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Short         |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Int           |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Long          |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Float         |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Double        |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| BigInteger    |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| BigDecimal    |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Char          |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| String        |   *  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Set\<String\> |   -  |    -    |   -   |   -   |    -   |       *      |       -      |
-| Byte[]        |   -  |    -    |   -   |   -   |    -   |       -      |       *      |
+| Type          | bool | integer | float | dimen | string | array-string | raw, etc. |
+|:--------------|:----:|:-------:|:-----:|:-----:|:------:|:------------:|:---------:|
+| Boolean       |   *  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Byte          |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Short         |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Int           |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Long          |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Float         |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Double        |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| BigInteger    |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| BigDecimal    |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Char          |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| String        |   *  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Set\<String\> |   -  |    -    |   -   |   -   |    -   |       *      |     -     |
+| Byte[]        |   -  |    -    |   -   |   -   |    -   |       -      |     *     |
 
 ### Type Conversion
 
@@ -195,7 +195,7 @@ Add the following description to the build.gradle file.
     }
 
     dependencies {
-        implementation 'com.wa2c.android:prefs:0.0.1'
+        implementation 'com.wa2c.android:prefs:0.1.0'
     }
 ```
 

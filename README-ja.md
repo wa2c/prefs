@@ -146,21 +146,21 @@ val v2 = prefs.getInt(R.string.pref_v2, defRes = R.integer.v2)
 
 利用可能なリソースの型は、データ型で異なります。利用可能なリソースは次の通りです。
 
-| データ型      | bool | integer | float | dimen | string | array-string | drawable,raw |
-|:--------------|:----:|:-------:|:-----:|:-----:|:------:|:------------:|:------------:|
-| Boolean       |   *  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Byte          |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Short         |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Int           |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Long          |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Float         |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Double        |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| BigInteger    |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| BigDecimal    |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Char          |   -  |    *    |   *   |   *   |    *   |       -      |       -      |
-| String        |   *  |    *    |   *   |   *   |    *   |       -      |       -      |
-| Set\<String\> |   -  |    -    |   -   |   -   |    -   |       *      |       -      |
-| Byte[]        |   -  |    -    |   -   |   -   |    -   |       -      |       *      |
+| データ型      | bool | integer | float | dimen | string | array-string | raw, etc. |
+|:--------------|:----:|:-------:|:-----:|:-----:|:------:|:------------:|:---------:|
+| Boolean       |   *  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Byte          |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Short         |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Int           |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Long          |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Float         |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Double        |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| BigInteger    |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| BigDecimal    |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Char          |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
+| String        |   *  |    *    |   *   |   *   |    *   |       -      |     -     |
+| Set\<String\> |   -  |    -    |   -   |   -   |    -   |       *      |     -     |
+| Byte[]        |   -  |    -    |   -   |   -   |    -   |       -      |     *     |
 
 ### 型変換
 
@@ -196,7 +196,7 @@ var v4 = prefs.getObjectOrNull("pref_v4", object: TypeToken<ObjectTestData>(){}.
     }
 
     dependencies {
-        implementation 'com.wa2c.android:prefs:0.0.1'
+        implementation 'com.wa2c.android:prefs:0.1.0'
     }
 ```
 
