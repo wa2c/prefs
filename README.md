@@ -209,7 +209,7 @@ See the sample app and the test codes.
 
 ## Licence
 
-[MIT](https://github.com/wa2c/prefs/blob/master/LICENSE.txt)
+[MIT](https://github.com/wa2c/prefs/blob/master/LICENSE)
 
 ## Author
 

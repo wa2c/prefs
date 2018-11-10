@@ -210,7 +210,7 @@ var v4 = prefs.getObjectOrNull("pref_v4", object: TypeToken<ObjectTestData>(){}.
 
 ## ライセンス
 
-[MIT](hhttps://github.com/wa2c/prefs/blob/master/LICENSE.txt)
+[MIT](https://github.com/wa2c/prefs/blob/master/LICENSE)
 
 ## 作者
 
