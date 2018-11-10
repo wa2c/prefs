@@ -43,7 +43,7 @@ var prefs1 = Prefs(context)
 var prefs2 = Prefs(context, "name")
 ~~~
 
-### Put Methods
+### Put Method
 
 The put methods are followings. The edit() and apply() are not necessary. They support the method chaining.
 
@@ -72,7 +72,7 @@ prefs
 
 ### Get Method With Non-null And Nullable
 
-All types have non-null get method and nullable get method. The nullable get method has "OrNull" at the end of the name.
+All types have non-null get methods and nullable get methods. The nullable get methods has "OrNull" at the end of the name.
 
 ~~~kotlin
 // Int?
