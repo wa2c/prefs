@@ -181,6 +181,20 @@ var v3 = prefs.getObjectOrNull("pref_v3", ObjectTestData::class.java)
 var v4 = prefs.getObjectOrNull("pref_v4", object: TypeToken<ObjectTestData>(){}.type)
 ~~~
 
+### Indexed access operator (only Kotlin)
+
+It  can omit get/put methods with the indexed access operator. Get methods return nullable type. Applied method is automatically determined by type inference.
+
+~~~kotlin
+val v1 = 123
+prefs["pref_v1"] = v1 // putInt
+val v1_ : Int? = prefs["pref_v1"] // getIntOrNull
+
+val v2 = "abc"
+prefs[R.string.pref_v2] = v2 // putString
+val v2_ : String? = prefs[R.string.pref_v2] // getStringOrNull
+~~~
+
 ## Environment
 
 - Android API Level 14 and over

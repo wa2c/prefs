@@ -8,10 +8,14 @@ import android.util.Base64
 import android.util.TypedValue
 import com.google.gson.Gson
 import java.io.*
+import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.*
+import kotlin.reflect.full.allSuperclasses
+import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.full.isSuperclassOf
 
 
 /**
@@ -19,7 +23,7 @@ import java.util.*
  * @param context A context.
  * @param name The preferences file name. Use default shared preferences if null.
  */
-open class Prefs @JvmOverloads constructor(protected val context: Context, protected val name : String? = null) {
+open class Prefs @JvmOverloads constructor(public val context: Context, protected val name : String? = null) {
 
     /** SharedPreferences. */
     val sharedPreferences : SharedPreferences = if (name.isNullOrEmpty()) {
@@ -81,7 +85,6 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
     fun contains(key : String) : Boolean {
         return sharedPreferences.contains(key)
     }
-
 
 
     // Get
@@ -1333,7 +1336,7 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
     }
 
     /**
-     * Set a Serializable value to the preferences.. Keep the class when using Proguard.
+     * Set a Serializable value to the preferences. Keep the class when using Proguard.
      * @param key The preference name.
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
@@ -1356,7 +1359,7 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
 
 
     /**
-     * Set a Object value to the preferences.. Keep the class when using Proguard.
+     * Set a Object value to the preferences. Keep the class when using Proguard.
      * @param keyRes The string resource id of the preference name.
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
@@ -1366,7 +1369,7 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
     }
 
     /**
-     * Set a Object value to the preferences.. Keep the class when using Proguard.
+     * Set a Object value to the preferences. Keep the class when using Proguard.
      * @param key The preference name.
      * @param value The new value for the preference. Remove value if null.
      * @return A reference to this object.
@@ -1381,6 +1384,104 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
         if (!beforeApply) end()
         return this
     }
+
+
+
+    // Operator
+
+    /**
+     * Retrieve a value from the preferences. Use the appropriate type according to the type parameter.
+     * @param keyRes The string resource id of the preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throw
+     */
+    inline operator fun <reified T> get(keyRes: Int) :T? {
+        return get(context.getString(keyRes))
+    }
+
+    /**
+     * Retrieve a value from the preferences. Use the appropriate type according to the type parameter.
+     * @param key The preference name.
+     * @return Returns the preference value if it exists, or null.
+     * @throws ClassCastException
+     */
+    inline operator fun <reified T> get(key : String) : T? {
+        val value : Any? = when {
+            T::class == Boolean::class -> getBooleanOrNull(key)
+            T::class == Byte::class -> getByteOrNull(key)
+            T::class == Short::class -> getShort(key)
+            T::class == Int::class -> getIntOrNull(key)
+            T::class == Long::class -> getLongOrNull(key)
+            T::class == Float::class -> getFloatOrNull(key)
+            T::class == Double::class -> getDoubleOrNull(key)
+            T::class == BigInteger::class -> getBigIntegerOrNull(key)
+            T::class == BigDecimal::class -> getBigDecimalOrNull(key)
+            T::class == Char::class -> getCharOrNull(key)
+            T::class == String::class -> getStringOrNull(key)
+            T::class.isSubclassOf(Set::class) -> try {
+                getStringSetOrNull(key) as T?
+            } catch (e : ClassCastException) {
+                getObjectOrNull(key) as Any?
+            }
+            T::class == ByteArray::class -> getBinOrNull(key)
+            T::class.isSubclassOf(Serializable::class) ->  getSerializableOrNull(key)
+            else -> getObjectOrNull(key) as T?
+        }
+        return value as T?
+    }
+
+    /**
+     * Set a value to the preferences. Use the appropriate type according to the type parameter.
+     * @param keyRes The string resource id of the preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
+    inline operator fun <reified T> set(keyRes: Int, value: T?) : Prefs {
+        return set(context.getString(keyRes), value)
+    }
+
+    /**
+     * Set a value to the preferences. Use the appropriate type according to the type parameter.
+     * @param key The preference name.
+     * @param value The new value for the preference. Remove value if null.
+     * @return A reference to this object.
+     */
+    @Suppress("UNCHECKED_CAST")
+    inline operator fun <reified T> set(key : String, value: T?) : Prefs {
+        when {
+            T::class == Boolean::class -> putBoolean(key, value as Boolean?)
+            T::class == Byte::class -> putByte(key, value as Byte?)
+            T::class == Short::class -> putShort(key, value as Short?)
+            T::class == Int::class -> putInt(key, value as Int?)
+            T::class == Long::class -> putLong(key, value as Long?)
+            T::class == Float::class -> putFloat(key, value as Float?)
+            T::class == Double::class -> putDouble(key, value as Double?)
+            T::class == BigInteger::class -> putBigInteger(key, value as BigInteger?)
+            T::class == BigDecimal::class -> putBigDecimal(key, value as BigDecimal??)
+            T::class == Char::class -> putChar(key, value as Char?)
+            T::class == String::class -> putString(key, value as String?)
+            T::class.isSubclassOf(Set::class) -> {
+                if (value == null) {
+                    putStringSet(key, null)
+                } else {
+                    val superType = (value as Set<*>).javaClass.genericSuperclass as ParameterizedType
+                    val types = superType.actualTypeArguments
+                    val entityClass = types[0] as Class<*>
+                    if (entityClass == String::class.java) {
+                        putStringSet(key, value as Set<String>)
+                    } else {
+                        putObject(key, value)
+                    }
+                }
+            }
+            T::class == ByteArray::class -> putBin(key, value as ByteArray?)
+            T::class.isSubclassOf(Serializable::class) ->  putSerializable(key, value as Serializable?)
+            else -> putObject(key, value)
+        }
+
+        return this
+    }
+
 
 
 
@@ -1473,10 +1574,10 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
                     Long::class -> res.toLong()
                     Float::class -> res.toFloat()
                     Double::class -> res.toDouble()
-                    Char::class -> res.toString()[0]
-                    String::class -> res.toString()
                     BigInteger::class -> res.toBigInteger()
                     BigDecimal::class -> res.toBigDecimal()
+                    Char::class -> res.toString()[0]
+                    String::class -> res.toString()
                     else -> throw ClassCastException("Invalid resource.")
                 }
                 return value as T
@@ -1490,10 +1591,10 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
                     Long::class -> res.toLong()
                     Float::class -> res
                     Double::class -> res.toDouble()
-                    Char::class -> res.toString()[0]
-                    String::class -> res.toString()
                     BigInteger::class -> BigInteger.valueOf(res.toLong())
                     BigDecimal::class -> res.toBigDecimal()
+                    Char::class -> res.toString()[0]
+                    String::class -> res.toString()
                     else -> throw ClassCastException("Invalid resource.")
                 }
                 return value as T
@@ -1507,10 +1608,10 @@ open class Prefs @JvmOverloads constructor(protected val context: Context, prote
                     Long::class -> res.toLong()
                     Float::class -> res.toFloat()
                     Double::class -> res.toDouble()
-                    Char::class -> res[0]
-                    String::class -> res
                     BigInteger::class -> res.toBigInteger()
                     BigDecimal::class -> res.toBigDecimal()
+                    Char::class -> res[0]
+                    String::class -> res
                     ByteArray::class -> context.resources.openRawResource(defRes).readBytes()
                     else -> throw ClassCastException("Invalid resource.")
                 }

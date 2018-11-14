@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.LinkedHashSet
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,7 +46,6 @@ class MainActivity : AppCompatActivity() {
 
         longSaveButton.setOnClickListener(clickListener)
         longLoadButton.setOnClickListener(clickListener)
-
 
         floatSaveButton.setOnClickListener(clickListener)
         floatLoadButton.setOnClickListener(clickListener)
@@ -157,9 +157,7 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
             }
-
         }
-
     }
 
 

@@ -182,6 +182,20 @@ var v3 = prefs.getObjectOrNull("pref_v3", ObjectTestData::class.java)
 var v4 = prefs.getObjectOrNull("pref_v4", object: TypeToken<ObjectTestData>(){}.type)
 ~~~
 
+### インデックス演算子 (Kotlinのみ)
+
+インデックス演算子により、get/putメソッドを省略することができます。getはNullable型を返します。型推論により適用メソッドが自動的に決定されます。
+
+~~~kotlin
+val v1 = 123
+prefs["pref_v1"] = v1 // putInt
+val v1_ : Int? = prefs["pref_v1"] // getIntOrNull
+
+val v2 = "abc"
+prefs[R.string.pref_v2] = v2 // putString
+val v2_ : String? = prefs[R.string.pref_v2] // getStringOrNull
+~~~
+
 ## 動作環境
 
 - Android API Level 14 以降

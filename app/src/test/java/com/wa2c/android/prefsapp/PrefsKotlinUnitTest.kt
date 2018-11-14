@@ -1,5 +1,6 @@
 package com.wa2c.android.prefs
 
+import android.text.TextUtils
 import com.google.common.reflect.TypeToken
 import com.wa2c.android.prefsapp.R
 import org.junit.Assert.*
@@ -43,6 +44,11 @@ class PrefsKotlinUnitTest {
         prefs.putBoolean(keyRes, true)
         assertTrue(prefs.getBoolean(keyRes, false, R.bool.bool_value2))
 
+
+        prefs[keyRes] = true
+        val v : Boolean? = prefs[keyRes]
+        assertTrue(v!!)
+
         prefs.remove(keyRes)
         assertNull(prefs.getBooleanOrNull(keyRes))
     }
@@ -61,6 +67,10 @@ class PrefsKotlinUnitTest {
 
         prefs.putByte(keyRes, 30)
         assertEquals(prefs.getByte(keyRes, 0, R.integer.int_value1), 30.toByte())
+
+        prefs[keyRes] = 40.toByte()
+        val v : Byte? = prefs[keyRes]
+        assertEquals(v, 40.toByte())
 
         prefs.remove(keyRes)
         assertNull(prefs.getByteOrNull(keyRes))
@@ -82,6 +92,13 @@ class PrefsKotlinUnitTest {
 
         prefs.putShort(keyRes, 30)
         assertEquals(prefs.getShort(keyRes, 0, R.integer.int_value1), 30.toShort())
+
+        prefs[keyRes] = 40.toShort()
+        val v : Short? = prefs[keyRes]
+        assertEquals(v, 40.toShort())
+
+        prefs.remove(keyRes)
+        assertNull(prefs.getIntOrNull(keyRes))
     }
 
     @Test
@@ -98,6 +115,10 @@ class PrefsKotlinUnitTest {
 
         prefs.putInt(keyRes, 30)
         assertEquals(prefs.getInt(keyRes, 0, R.integer.int_value1), 30)
+
+        prefs[keyRes] = 40
+        val v : Int? = prefs[keyRes]
+        assertEquals(v, 40)
 
         prefs.remove(keyRes)
         assertNull(prefs.getIntOrNull(keyRes))
@@ -118,6 +139,10 @@ class PrefsKotlinUnitTest {
         prefs.putLong(keyRes, 30.toLong())
         assertEquals(prefs.getLong(keyRes, 0, R.integer.int_value1), 30L)
 
+        prefs[keyRes] = 40L
+        val v : Long? = prefs[keyRes]
+        assertEquals(v, 40L)
+
         prefs.remove(keyRes)
         assertNull(prefs.getLongOrNull(keyRes))
     }
@@ -136,6 +161,10 @@ class PrefsKotlinUnitTest {
 
         prefs.putFloat(keyRes, 1.23F)
         assertEquals(prefs.getFloat(keyRes, 0.0F, R.dimen.float_value1), 1.23F, 0.001F)
+
+        prefs[keyRes] = 4.56F
+        val v : Float? = prefs[keyRes]
+        assertEquals(v, 4.56F)
 
         prefs.remove(keyRes)
         assertNull(prefs.getFloatOrNull(keyRes))
@@ -156,6 +185,10 @@ class PrefsKotlinUnitTest {
         prefs.putDouble(keyRes, 1.23)
         assertEquals(prefs.getDouble(keyRes, 0.0, R.integer.int_value1), 1.23, 0.001)
 
+        prefs[keyRes] = 4.56
+        val v : Double? = prefs[keyRes]
+        assertEquals(v!!, 4.56, 0.001)
+
         prefs.remove(keyRes)
         assertNull(prefs.getDoubleOrNull(keyRes))
     }
@@ -175,6 +208,10 @@ class PrefsKotlinUnitTest {
         prefs.putBigInteger(keyRes, BigInteger("30"))
         assertEquals(prefs.getBigInteger(keyRes, BigInteger.ZERO, R.integer.int_value1), BigInteger("30"))
 
+        prefs[keyRes] = BigInteger("40")
+        val v : BigInteger? = prefs[keyRes]
+        assertEquals(v, BigInteger("40"))
+
         prefs.remove(keyRes)
         assertNull(prefs.getBigIntegerOrNull(keyRes))
     }
@@ -192,6 +229,10 @@ class PrefsKotlinUnitTest {
 
         prefs.defaultBigDecimalValue = BigDecimal("20")
         assertEquals(prefs.getBigDecimal(keyRes), BigDecimal("20"))
+
+        prefs[keyRes] = BigDecimal("40")
+        val v : BigDecimal? = prefs[keyRes]
+        assertEquals(v, BigDecimal("40"))
 
         prefs.putBigDecimal(keyRes, BigDecimal("1.23"))
         assertEquals(prefs.getBigDecimal(keyRes, BigDecimal.ZERO, R.integer.int_value1), BigDecimal("1.23"))
@@ -212,6 +253,10 @@ class PrefsKotlinUnitTest {
         prefs.putChar(keyRes, 'c')
         assertEquals(prefs.getChar(keyRes, ' ', R.integer.int_value1), 'c')
 
+        prefs[keyRes] = 'd'
+        val v : Char? = prefs[keyRes]
+        assertEquals(v, 'd')
+
         prefs.remove(keyRes)
         assertNull(prefs.getCharOrNull(keyRes))
     }
@@ -231,6 +276,10 @@ class PrefsKotlinUnitTest {
 
         prefs.putString(keyRes, "fgh")
         assertEquals(prefs.getString(keyRes, "", R.integer.int_value1), "fgh")
+
+        prefs[keyRes] = "ijk"
+        val v : String? = prefs[keyRes]
+        assertEquals(v, "ijk")
 
         prefs.remove(keyRes)
         assertNull(prefs.getStringOrNull(keyRes))
@@ -288,6 +337,22 @@ class PrefsKotlinUnitTest {
                 }
             })
 
+        prefs[keyRes] = object : HashSet<String>() {
+            init {
+                add("cc")
+                add("dd")
+            }
+        }
+        val v : Set<String>? = prefs[keyRes]
+        assertEquals(
+            v,
+            object : HashSet<String>() {
+                init {
+                    add("cc")
+                    add("dd")
+                }
+            })
+
         prefs.remove(keyRes)
         assertNull(prefs.getStringSetOrNull(keyRes))
     }
@@ -303,6 +368,10 @@ class PrefsKotlinUnitTest {
 
         prefs.putBin(keyRes, byteArrayOf(2, 3, 4, 5))
         assertArrayEquals(prefs.getBin(keyRes), byteArrayOf(2, 3, 4, 5))
+
+        prefs[keyRes] = byteArrayOf(3, 4, 5, 6)
+        val v : ByteArray? = prefs[keyRes]
+        assertArrayEquals(v, byteArrayOf(3, 4, 5, 6))
 
         prefs.remove(keyRes)
         assertNull(prefs.getBinOrNull(keyRes))
@@ -330,6 +399,12 @@ class PrefsKotlinUnitTest {
         )
         assertEquals(
             prefs.getSerializable(keyRes, SerializableTestData::class.java, SerializableTestData()), SerializableTestData(id = 10, name = "abc")
+        )
+
+        prefs[keyRes] = obj
+        val v : SerializableTestData? = prefs[keyRes]
+        assertEquals(
+            v, SerializableTestData(id = 10, name = "abc")
         )
 
         prefs.remove(keyRes)
@@ -367,6 +442,12 @@ class PrefsKotlinUnitTest {
             prefs.getObject(keyRes, type, ObjectTestData()), ObjectTestData(id = 10, name = "abc")
         )
 
+        prefs[keyRes] = obj
+        val v : ObjectTestData? = prefs[keyRes]
+        assertEquals(
+            v, ObjectTestData(id = 10, name = "abc")
+        )
+
         prefs.remove(keyRes)
         assertNull(prefs.getObjectOrNull<ObjectTestData>(keyRes))
         assertNull(prefs.getObjectOrNull(keyRes, ObjectTestData::class.java))
@@ -397,10 +478,25 @@ class PrefsKotlinUnitTest {
     /**
      * Serializable test class.
      */
-    data class ObjectTestData (
-        var name: String? = null,
-        var id: Int = 0
-    )
+    class ObjectTestData(var name: String? = null, var id: Int = 0) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other)
+                return true
+            if (other == null)
+                return false
+            if (other !is ObjectTestData)
+                return false
+
+            val testObj = other as ObjectTestData?
+            return testObj!!.id == this.id && TextUtils.equals(testObj.name, this.name)
+        }
+
+        override fun hashCode(): Int {
+            var result = name?.hashCode() ?: 0
+            result = 31 * result + id
+            return result
+        }
+    }
 
 }
 
