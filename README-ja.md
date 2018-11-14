@@ -210,7 +210,7 @@ val v2_ : String? = prefs[R.string.pref_v2] // getStringOrNull
     }
 
     dependencies {
-        implementation 'com.wa2c.android:prefs:0.1.0'
+        implementation 'com.wa2c.android:prefs:0.1.1'
     }
 ```
 
