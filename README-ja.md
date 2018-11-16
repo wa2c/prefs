@@ -26,7 +26,7 @@ SharedPreferencesに対する各種操作を提供します。
 | Char          | getChar         | putChar         | String        | toString                    |
 | String        | getString       | putString       | String        |                             |
 | Set\<String\> | getStringSet    | putStringSet    | Set\<String\> |                             |
-| Byte[]        | getBin          | putBin          | String        | Base64                      |
+| ByteArray     | getBin          | putBin          | String        | Base64                      |
 | Serializable  | getSerializable | putSerializable | String        | ObjectOutputStream + Base64 |
 | Object        | getObject       | putObject       | String        | Gson                        |
 
@@ -160,7 +160,7 @@ val v2 = prefs.getInt(R.string.pref_v2, defRes = R.integer.v2)
 | Char          |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
 | String        |   *  |    *    |   *   |   *   |    *   |       -      |     -     |
 | Set\<String\> |   -  |    -    |   -   |   -   |    -   |       *      |     -     |
-| Byte[]        |   -  |    -    |   -   |   -   |    -   |       -      |     *     |
+| ByteArray     |   -  |    -    |   -   |   -   |    -   |       -      |     *     |
 
 ### 型変換
 

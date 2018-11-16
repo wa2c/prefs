@@ -26,7 +26,7 @@ Following are the supported types, get/set methods, and actual types in SharedPr
 | Char          | getChar         | putChar         | String        | toString                    |
 | String        | getString       | putString       | String        |                             |
 | Set\<String\> | getStringSet    | putStringSet    | Set\<String\> |                             |
-| Byte[]        | getBin          | putBin          | String        | Base64                      |
+| ByteArray     | getBin          | putBin          | String        | Base64                      |
 | Serializable  | getSerializable | putSerializable | String        | ObjectOutputStream + Base64 |
 | Object        | getObject       | putObject       | String        | Gson                        |
 
@@ -159,7 +159,7 @@ The available resource types different for each data type. They are follows.
 | Char          |   -  |    *    |   *   |   *   |    *   |       -      |     -     |
 | String        |   *  |    *    |   *   |   *   |    *   |       -      |     -     |
 | Set\<String\> |   -  |    -    |   -   |   -   |    -   |       *      |     -     |
-| Byte[]        |   -  |    -    |   -   |   -   |    -   |       -      |     *     |
+| ByteArray     |   -  |    -    |   -   |   -   |    -   |       -      |     *     |
 
 ### Type Conversion
 
