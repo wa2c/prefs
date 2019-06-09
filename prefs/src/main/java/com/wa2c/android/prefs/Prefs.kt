@@ -3,7 +3,7 @@ package com.wa2c.android.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.support.annotation.*
+import androidx.annotation.*
 import android.util.Base64
 import android.util.TypedValue
 import com.google.gson.Gson
@@ -1457,7 +1457,7 @@ open class Prefs @JvmOverloads constructor(public val context: Context, protecte
             T::class == Float::class -> putFloat(key, value as Float?)
             T::class == Double::class -> putDouble(key, value as Double?)
             T::class == BigInteger::class -> putBigInteger(key, value as BigInteger?)
-            T::class == BigDecimal::class -> putBigDecimal(key, value as BigDecimal??)
+            T::class == BigDecimal::class -> putBigDecimal(key, value as BigDecimal?)
             T::class == Char::class -> putChar(key, value as Char?)
             T::class == String::class -> putString(key, value as String?)
             T::class.isSubclassOf(Set::class) -> {

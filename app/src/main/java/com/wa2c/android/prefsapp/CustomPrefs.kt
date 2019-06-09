@@ -3,9 +3,9 @@ package com.wa2c.android.prefsapp
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.support.annotation.ColorRes
-import android.support.annotation.IntegerRes
-import android.support.annotation.StringRes
+import androidx.annotation.ColorRes
+import androidx.annotation.IntegerRes
+import androidx.annotation.StringRes
 import android.util.TypedValue
 import com.wa2c.android.prefs.Prefs
 import java.text.SimpleDateFormat
